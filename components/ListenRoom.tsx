@@ -118,10 +118,10 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
   const theme = getTheme("tv-girl");
   const revealReady = userState ? isRevealUnlocked(userState) : false;
 
-  const youtubeEmbedUrl = selectedRelease.youtubePlaylistId
-    ? `https://www.youtube.com/embed/videoseries?list=${selectedRelease.youtubePlaylistId}&index=${Math.max(0, selectedTrack.trackNumber - 1)}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&enablejsapi=1`
-    : selectedTrack.youtubeId
+  const youtubeEmbedUrl = selectedTrack.youtubeId
     ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`
+    : selectedRelease.youtubePlaylistId
+    ? `https://www.youtube.com/embed/videoseries?list=${selectedRelease.youtubePlaylistId}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&enablejsapi=1`
     : null;
 
   return (
@@ -226,7 +226,7 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
               <div className="w-full max-w-md aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-[#EC4899]/40 relative bg-black">
                 <iframe
                   ref={iframeRef}
-                  key={`${selectedRelease.id}-${selectedRelease.youtubePlaylistId || selectedTrack.youtubeId}-${selectedTrack.trackNumber}-${isPlaying}`}
+                  key={`${selectedRelease.id}-${selectedTrack.trackNumber}-${selectedTrack.youtubeId || "track"}-${isPlaying}`}
                   src={youtubeEmbedUrl}
                   title={`${selectedRelease.title} - ${selectedTrack.title}`}
                   className="w-full h-full border-0"
