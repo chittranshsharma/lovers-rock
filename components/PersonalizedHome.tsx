@@ -108,10 +108,10 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-[#F7F5EF] flex flex-col relative overflow-x-hidden select-none">
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none" style={{ background: "linear-gradient(160deg, #FFF0F5 0%, #FDF2F8 40%, #FCE7F3 100%)" }}>
       {/* Film grain and sparse atmospheric particles (24 items total: tiny hearts, film dust, paper flecks) */}
       <CuteParticles color={accentColor} />
-      <div className="tv-scanlines opacity-20 pointer-events-none" aria-hidden="true" />
+      <div className="tv-scanlines opacity-10 pointer-events-none" aria-hidden="true" />
 
       {/* Navigation Header: Minimal identity before name entry, full nav after */}
       {hasName ? (
@@ -131,13 +131,13 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
       ) : (
         <header className="relative z-30 w-full max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-display font-black text-sm tracking-widest text-[#F7F5EF] uppercase">
+            <span className="font-display font-black text-sm tracking-widest uppercase" style={{ color: "#4A0E2E" }}>
               TV GIRL
             </span>
-            <Heart className="w-3 h-3 fill-[#FF1685] text-[#FF1685]" />
+            <Heart className="w-3 h-3 fill-[#EC4899] text-[#EC4899]" />
           </div>
-          <span className="font-mono text-[9px] tracking-widest text-[#AFA797]/70 uppercase">
-            BROADCAST FREQ 89.4
+          <span className="font-mono text-[9px] tracking-widest uppercase" style={{ color: "#9D4A6E", opacity: 0.7 }}>
+            a little world, just for you
           </span>
         </header>
       )}
@@ -151,10 +151,10 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               key="pre-name-header"
               className="space-y-1 transition-all duration-300"
             >
-              <span className="font-mono text-[10px] tracking-widest text-[#AFA797] uppercase block">
-                SPECIAL NIGHT TRANSMISSION
+              <span className="font-mono text-[10px] tracking-widest uppercase block" style={{ color: "#9D4A6E" }}>
+                a special transmission
               </span>
-              <h1 className="font-display font-black text-5xl sm:text-7xl tracking-tighter uppercase text-white leading-none">
+              <h1 className="font-display font-black text-5xl sm:text-7xl tracking-tighter uppercase leading-none" style={{ color: "#4A0E2E" }}>
                 TV GIRL
               </h1>
             </div>
@@ -163,13 +163,13 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               key="post-name-header"
               className="space-y-1 transition-all duration-300 animate-in fade-in zoom-in-95"
             >
-              <span className="font-mono text-[10px] tracking-widest text-[#FF1685] uppercase block font-bold">
-                FOR {displayName.toUpperCase()}
+              <span className="font-mono text-[10px] tracking-widest uppercase block font-bold" style={{ color: "#EC4899" }}>
+                FOR {displayName.toUpperCase()} ♡
               </span>
-              <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight uppercase text-white leading-none">
+              <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight uppercase leading-none" style={{ color: "#4A0E2E" }}>
                 {displayName.toUpperCase()}
               </h1>
-              <p className="font-serif italic text-sm sm:text-base text-[#D9D0BE] pt-1">
+              <p className="font-serif italic text-sm sm:text-base pt-1" style={{ color: "#9D4A6E" }}>
                 &ldquo;welcome to your little corner.&rdquo;
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
             exit={{ opacity: 0, y: -10 }}
             className="w-full max-w-xs text-center space-y-3 pt-2"
           >
-            <p className="font-serif italic text-sm text-[#D9D0BE]">
+            <p className="font-serif italic text-sm" style={{ color: "#9D4A6E" }}>
               what&apos;s your name?
             </p>
 
@@ -209,10 +209,17 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
                   placeholder="type your name..."
                   autoFocus
                   maxLength={28}
-                  className="w-full bg-[#121215] border border-white/20 focus:border-[#FF1685] px-4 py-2.5 text-center text-sm sm:text-base font-mono text-white placeholder-[#AFA797]/40 rounded-[2px] outline-none transition-colors shadow-inner"
+                  className="w-full px-4 py-3 text-center text-sm sm:text-base font-mono outline-none transition-colors rounded-xl"
+                  style={{
+                    background: "rgba(255,240,245,0.85)",
+                    border: "1.5px solid rgba(236,72,153,0.35)",
+                    color: "#4A0E2E",
+                    backdropFilter: "blur(8px)",
+                    boxShadow: "0 2px 12px rgba(236,72,153,0.1)",
+                  }}
                 />
                 {nameInput.trim() && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FF1685] text-xs">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: "#EC4899" }}>
                     ♡
                   </span>
                 )}
@@ -221,7 +228,11 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               <button
                 type="submit"
                 disabled={!nameInput.trim()}
-                className="w-full py-2.5 bg-[#F7F5EF] hover:bg-white text-[#09090B] disabled:opacity-30 disabled:hover:bg-[#F7F5EF] font-mono font-bold text-xs uppercase tracking-widest rounded-[2px] transition-all cursor-pointer shadow-[0_0_20px_rgba(255,22,133,0.3)] hover:shadow-[0_0_30px_rgba(255,22,133,0.5)] active:scale-98"
+                className="w-full py-3 font-mono font-bold text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer text-white disabled:opacity-40"
+                style={{
+                  background: "linear-gradient(135deg, #EC4899, #DB2777)",
+                  boxShadow: "0 6px 24px rgba(236,72,153,0.5)",
+                }}
               >
                 ENTER ♡
               </button>
@@ -240,21 +251,22 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               {/* Door 01: PLAY */}
               <Link
                 href={`/${slug}/play`}
-                className="group p-4 bg-[#121215] hover:bg-[#18181D] border border-white/15 hover:border-pink-500/50 rounded-[2px] flex flex-col justify-between min-h-[135px] transition-all cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.8)]"
+                className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
+                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between text-[#AFA797] mb-2 text-[10px] font-mono tracking-widest uppercase">
-                    <span>01 // DOOR</span>
-                    <Gamepad2 className="w-3.5 h-3.5 group-hover:text-pink-400 transition-colors" />
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                    <span>01</span>
+                    <Gamepad2 className="w-3.5 h-3.5 transition-colors" style={{ color: "#EC4899" }} />
                   </div>
-                  <h2 className="font-display font-black text-base text-white tracking-wider uppercase">
-                    PLAY
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                    🌸 PLAY
                   </h2>
-                  <p className="font-serif italic text-[11px] text-[#D9D0BE] mt-1 leading-snug">
-                    four little games waiting for you.
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
+                    four little worlds waiting for you.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono text-[#AFA797] group-hover:text-white uppercase tracking-widest pt-2">
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
                   <span>ENTER</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -263,21 +275,22 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               {/* Door 02: LISTEN */}
               <Link
                 href={`/${slug}/listen`}
-                className="group p-4 bg-[#121215] hover:bg-[#18181D] border border-white/15 hover:border-pink-500/50 rounded-[2px] flex flex-col justify-between min-h-[135px] transition-all cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.8)]"
+                className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
+                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between text-[#AFA797] mb-2 text-[10px] font-mono tracking-widest uppercase">
-                    <span>02 // DOOR</span>
-                    <Disc className="w-3.5 h-3.5 group-hover:text-pink-400 transition-colors" />
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                    <span>02</span>
+                    <Disc className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />
                   </div>
-                  <h2 className="font-display font-black text-base text-white tracking-wider uppercase">
-                    LISTEN
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                    🎵 LISTEN
                   </h2>
-                  <p className="font-serif italic text-[11px] text-[#D9D0BE] mt-1 leading-snug">
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
                     drop the needle on the late night record.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono text-[#AFA797] group-hover:text-white uppercase tracking-widest pt-2">
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
                   <span>TUNE IN</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -286,21 +299,22 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               {/* Door 03: ARCHIVE */}
               <Link
                 href={`/${slug}/archive`}
-                className="group p-4 bg-[#121215] hover:bg-[#18181D] border border-white/15 hover:border-pink-500/50 rounded-[2px] flex flex-col justify-between min-h-[135px] transition-all cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.8)]"
+                className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
+                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between text-[#AFA797] mb-2 text-[10px] font-mono tracking-widest uppercase">
-                    <span>03 // DOOR</span>
-                    <Archive className="w-3.5 h-3.5 group-hover:text-pink-400 transition-colors" />
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                    <span>03</span>
+                    <Archive className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />
                   </div>
-                  <h2 className="font-display font-black text-base text-white tracking-wider uppercase">
-                    ARCHIVE
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                    📮 ARCHIVE
                   </h2>
-                  <p className="font-serif italic text-[11px] text-[#D9D0BE] mt-1 leading-snug">
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
                     polaroids, tickets, and things left behind.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono text-[#AFA797] group-hover:text-white uppercase tracking-widest pt-2">
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
                   <span>UNEARTH</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -312,7 +326,8 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               {revealReady ? (
                 <Link
                   href={`/${slug}/reveal`}
-                  className="px-6 py-3 bg-[#FF1685] hover:bg-[#FF3596] text-white font-mono font-bold text-xs uppercase tracking-widest rounded-[2px] transition-all inline-flex items-center gap-2 shadow-[0_0_25px_rgba(255,22,133,0.5)] animate-pulse"
+                  className="px-7 py-3.5 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-full transition-all inline-flex items-center gap-2 animate-pulse"
+                  style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)", boxShadow: "0 6px 24px rgba(236,72,153,0.55)" }}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>OPEN THE LAST THING ♡</span>
@@ -320,9 +335,10 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               ) : (
                 <button
                   onClick={() => setShowLockedModal(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#121215] hover:bg-[#18181D] border border-white/10 hover:border-white/20 rounded-[2px] text-[10px] font-mono tracking-widest text-[#AFA797] uppercase transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
+                  style={{ background: "rgba(244,114,182,0.12)", border: "1px solid rgba(236,72,153,0.25)", color: "#9D4A6E" }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500/50 animate-ping" />
+                  <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ background: "#EC4899" }} />
                   <Lock className="w-2.5 h-2.5" />
                   <span>SOMETHING IS STILL LOCKED</span>
                 </button>
@@ -335,48 +351,50 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
       {/* Unlock Checklist Modal */}
       <AnimatePresence>
         {showLockedModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" style={{ background: "rgba(74,14,46,0.4)" }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-md bg-[#151518] border border-white/20 rounded-[2px] p-6 space-y-4 text-left shadow-2xl"
+              className="w-full max-w-md rounded-2xl p-6 space-y-4 text-left shadow-2xl"
+              style={{ background: "rgba(255,240,245,0.95)", border: "1.5px solid rgba(244,114,182,0.4)", backdropFilter: "blur(20px)" }}
             >
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <span className="text-[11px] font-mono tracking-widest text-white uppercase flex items-center gap-1.5">
-                  <Lock className="w-3 h-3 text-[#FF1685]" />
+              <div className="flex items-center justify-between border-b pb-2" style={{ borderColor: "rgba(244,114,182,0.3)" }}>
+                <span className="text-[11px] font-mono tracking-widest uppercase flex items-center gap-1.5" style={{ color: "#4A0E2E" }}>
+                  <Lock className="w-3 h-3" style={{ color: "#EC4899" }} />
                   <span>UNLOCK CHECKLIST</span>
                 </span>
                 <button
                   onClick={() => setShowLockedModal(false)}
-                  className="text-xs font-mono text-[#AFA797] hover:text-white"
+                  className="text-xs font-mono hover:opacity-70 transition-opacity"
+                  style={{ color: "#9D4A6E" }}
                 >
                   [ CLOSE ]
                 </button>
               </div>
 
-              <p className="font-serif italic text-xs text-[#D9D0BE]">
+              <p className="font-serif italic text-xs" style={{ color: "#9D4A6E" }}>
                 to unlock the final reveal, experience a few little moments:
               </p>
 
               <div className="space-y-2 text-xs font-mono">
-                <div className="flex items-center justify-between p-2.5 bg-black/40 rounded-[2px] border border-white/5">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border" style={{ background: "rgba(244,114,182,0.08)", borderColor: "rgba(236,72,153,0.2)", color: "#4A0E2E" }}>
                   <span>1. PLAY AT LEAST 2 MINI GAMES</span>
-                  <span className={progress.gamesCount >= 2 ? "text-pink-400 font-bold" : "text-[#AFA797]"}>
+                  <span style={{ color: progress.gamesCount >= 2 ? "#EC4899" : "#9D4A6E", fontWeight: progress.gamesCount >= 2 ? "bold" : "normal" }}>
                     {progress.gamesCount} / 2 {progress.gamesCount >= 2 && "✓"}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 bg-black/40 rounded-[2px] border border-white/5">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border" style={{ background: "rgba(244,114,182,0.08)", borderColor: "rgba(236,72,153,0.2)", color: "#4A0E2E" }}>
                   <span>2. DROP THE NEEDLE IN /LISTEN</span>
-                  <span className={progress.didListen ? "text-pink-400 font-bold" : "text-[#AFA797]"}>
+                  <span style={{ color: progress.didListen ? "#EC4899" : "#9D4A6E", fontWeight: progress.didListen ? "bold" : "normal" }}>
                     {progress.didListen ? "DONE ✓" : "NOT YET"}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-2.5 bg-black/40 rounded-[2px] border border-white/5">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border" style={{ background: "rgba(244,114,182,0.08)", borderColor: "rgba(236,72,153,0.2)", color: "#4A0E2E" }}>
                   <span>3. OPEN AN ARTIFACT IN /ARCHIVE</span>
-                  <span className={progress.didExploreArchive ? "text-pink-400 font-bold" : "text-[#AFA797]"}>
+                  <span style={{ color: progress.didExploreArchive ? "#EC4899" : "#9D4A6E", fontWeight: progress.didExploreArchive ? "bold" : "normal" }}>
                     {progress.didExploreArchive ? "OPENED ✓" : "NOT YET"}
                   </span>
                 </div>
@@ -385,9 +403,10 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               <div className="pt-2 text-center">
                 <button
                   onClick={() => setShowLockedModal(false)}
-                  className="px-4 py-2 bg-white/10 hover:bg-white/20 text-xs font-mono uppercase tracking-widest text-white rounded-[2px] transition-colors"
+                  className="px-5 py-2 rounded-full text-xs font-mono uppercase tracking-widest text-white transition-all hover:scale-105"
+                  style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)" }}
                 >
-                  OKAY, GOT IT
+                  OKAY, GOT IT ♡
                 </button>
               </div>
             </motion.div>

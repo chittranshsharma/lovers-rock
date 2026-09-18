@@ -1,16 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Music, Play, Pause, Disc, ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Music, Play, Pause, Disc, ArrowRight, CheckCircle2,
+  SkipForward, SkipBack, Volume2, VolumeX, ChevronDown, ExternalLink
+} from "lucide-react";
 import SiteNav from "@/components/SiteNav";
 import CuteParticles from "@/components/CuteParticles";
 import TVVinyl from "@/components/tv/TVVinyl";
 import SpotifyPlayer from "@/components/SpotifyPlayer";
 import { loadUserState, saveUserState, isRevealUnlocked, UserState } from "@/lib/userState";
 import { resolveAccentColor, getTheme } from "@/lib/themes";
-import { TV_GIRL_RELEASES } from "@/lib/releases";
+import { TV_GIRL_RELEASES, TVGirlRelease, Track, formatDuration } from "@/lib/releases";
 
 interface ListenRoomProps {
   slug: string;
@@ -21,8 +24,13 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
   const [userState, setUserState] = useState<UserState | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSpotifyOpen, setIsSpotifyOpen] = useState(false);
-  const [selectedReleaseIdx, setSelectedReleaseIdx] = useState(8); // French Exit default
+  const [selectedRelease, setSelectedRelease] = useState<TVGirlRelease>(TV_GIRL_RELEASES[0]); // French Exit
+  const [selectedTrack, setSelectedTrack] = useState<Track>(TV_GIRL_RELEASES[0].tracks[0]);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showTrackList, setShowTrackList] = useState(false);
+  const [albumSelectorOpen, setAlbumSelectorOpen] = useState(false);
   const [audioAmplitude, setAudioAmplitude] = useState(0);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -45,23 +53,35 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
 
   const displayName = mounted ? (userState?.displayName || "You") : "You";
 
-  // Audio amplitude pulse simulator for ambient reactions
+  // Audio amplitude pulse simulator
   useEffect(() => {
-    if (!isPlaying) {
-      setAudioAmplitude(0);
-      return;
-    }
+    if (!isPlaying) { setAudioAmplitude(0); return; }
     const interval = setInterval(() => {
-      setAudioAmplitude(Math.random() * 0.45 + 0.1);
+      setAudioAmplitude(Math.random() * 0.5 + 0.15);
     }, 180);
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const handleTogglePlay = () => {
+  const handleTogglePlay = useCallback(() => {
     const next = !isPlaying;
     setIsPlaying(next);
-
     if (next && userState && !userState.interactions?.listenedToVinyl) {
+      const updated = saveUserState({
+        interactions: {
+          ...userState.interactions,
+          listenedToVinyl: true,
+          openedArchiveItems: userState.interactions?.openedArchiveItems || [],
+        },
+      }, slug);
+      setUserState(updated);
+    }
+  }, [isPlaying, userState, slug]);
+
+  const handleSelectTrack = (track: Track) => {
+    setSelectedTrack(track);
+    setIsPlaying(true);
+    setShowTrackList(false);
+    if (userState && !userState.interactions?.listenedToVinyl) {
       const updated = saveUserState({
         interactions: {
           ...userState.interactions,
@@ -73,140 +93,332 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
     }
   };
 
+  const handleNextTrack = () => {
+    const idx = selectedRelease.tracks.findIndex(t => t.trackNumber === selectedTrack.trackNumber);
+    const next = selectedRelease.tracks[(idx + 1) % selectedRelease.tracks.length];
+    setSelectedTrack(next);
+    setIsPlaying(true);
+  };
+
+  const handlePrevTrack = () => {
+    const idx = selectedRelease.tracks.findIndex(t => t.trackNumber === selectedTrack.trackNumber);
+    const prev = selectedRelease.tracks[(idx - 1 + selectedRelease.tracks.length) % selectedRelease.tracks.length];
+    setSelectedTrack(prev);
+    setIsPlaying(true);
+  };
+
+  const handleSelectRelease = (release: TVGirlRelease) => {
+    setSelectedRelease(release);
+    setSelectedTrack(release.tracks[0]);
+    setIsPlaying(true);
+    setAlbumSelectorOpen(false);
+    setShowTrackList(true);
+  };
+
   const theme = getTheme("tv-girl");
   const accentColor = resolveAccentColor(theme, userState?.themeState?.accent || "pink");
   const revealReady = userState ? isRevealUnlocked(userState) : false;
-  const currentRelease = TV_GIRL_RELEASES[selectedReleaseIdx];
+
+  const youtubeEmbedUrl = selectedTrack.youtubeId
+    ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&enablejsapi=1`
+    : null;
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-[#F7F5EF] flex flex-col relative overflow-x-hidden select-none">
-      <CuteParticles color={accentColor} />
-      <div className="tv-scanlines opacity-20 pointer-events-none" aria-hidden="true" />
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none"
+      style={{ background: "linear-gradient(160deg, #FFF0F5 0%, #FDF2F8 40%, #FCE7F3 100%)" }}>
+      <CuteParticles color="#F472B6" />
 
       {/* Top Nav */}
       <SiteNav
         slug={slug}
         displayName={displayName}
-        color={accentColor}
+        color="#EC4899"
         isRevealReady={revealReady}
         onSpotifyToggle={() => setIsSpotifyOpen(!isSpotifyOpen)}
       />
 
-      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-10 relative z-10">
-        {/* Editorial Header */}
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12 space-y-8 relative z-10">
+
+        {/* Header */}
         <section className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#151518] border border-white/10 rounded-[2px] text-[10px] font-mono tracking-widest text-[#D9D0BE] uppercase">
-            <Disc className="w-3 h-3 text-[#FF1685]" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-mono tracking-widest uppercase"
+            style={{ background: "rgba(244,114,182,0.15)", border: "1px solid rgba(236,72,153,0.3)", color: "#BE185D" }}>
+            <Disc className="w-3 h-3" />
             <span>MUSIC ROOM · 33⅓ RPM</span>
           </div>
-
-          <h1 className="font-display font-black text-2xl sm:text-4xl uppercase tracking-tight text-white">
+          <h1 className="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight"
+            style={{ color: "#4A0E2E" }}>
             THE LATE NIGHT RECORD
           </h1>
-
-          <p className="font-serif italic text-sm text-[#D9D0BE] max-w-md mx-auto">
-            click the turntable to drop the needle. no rush, no algorithms—just tape hiss and warm grooves.
+          <p className="font-serif italic text-sm max-w-md mx-auto" style={{ color: "#9D4A6E" }}>
+            pick an album, pick a song — let it play softly while you exist.
           </p>
         </section>
 
-        {/* Cinematic Turntable Centerpiece */}
-        <section className="relative max-w-lg mx-auto p-6 sm:p-8 bg-[#111114] border border-[rgba(247,245,239,0.18)] rounded-[3px] shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col items-center justify-center">
-          <div className="w-full flex items-center justify-between text-[10px] font-mono tracking-widest text-[#AFA797] uppercase border-b border-white/10 pb-3 mb-6">
-            <span>TURNTABLE DECK // STEREO</span>
-            <span className={isPlaying ? "text-[#FF1685] font-bold animate-pulse" : "text-[#AFA797]"}>
-              {isPlaying ? "● NEEDLE DROPPED" : "NEEDLE RESTING"}
-            </span>
+        {/* Now Playing Player */}
+        <section className="rounded-2xl overflow-hidden shadow-2xl"
+          style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(20px)", border: "1.5px solid rgba(244,114,182,0.3)" }}>
+
+          {/* Album selector pill */}
+          <div className="p-4 border-b" style={{ borderColor: "rgba(244,114,182,0.2)" }}>
+            <button
+              onClick={() => setAlbumSelectorOpen(v => !v)}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all"
+              style={{ background: "rgba(244,114,182,0.1)", border: "1px solid rgba(236,72,153,0.2)" }}
+            >
+              <div className="text-left">
+                <div className="text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>Now Playing From</div>
+                <div className="font-display font-black text-sm mt-0.5" style={{ color: "#4A0E2E" }}>
+                  {selectedRelease.title}
+                </div>
+                <div className="text-[10px] font-mono mt-0.5" style={{ color: "#BE185D" }}>
+                  {selectedRelease.artist} · {selectedRelease.year} · {selectedRelease.typeLabel}
+                </div>
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${albumSelectorOpen ? "rotate-180" : ""}`}
+                style={{ color: "#EC4899" }}
+              />
+            </button>
+
+            {/* Album dropdown */}
+            <AnimatePresence>
+              {albumSelectorOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-3 rounded-xl overflow-hidden"
+                  style={{ border: "1px solid rgba(244,114,182,0.2)", background: "rgba(255,240,245,0.95)" }}
+                >
+                  <div className="max-h-64 overflow-y-auto p-2 space-y-1">
+                    {TV_GIRL_RELEASES.map((rel) => (
+                      <button
+                        key={rel.id}
+                        onClick={() => handleSelectRelease(rel)}
+                        className="w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all"
+                        style={{
+                          background: selectedRelease.id === rel.id
+                            ? "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(192,132,252,0.1))"
+                            : "transparent",
+                          border: selectedRelease.id === rel.id ? "1px solid rgba(236,72,153,0.3)" : "1px solid transparent",
+                        }}
+                      >
+                        <div>
+                          <div className="font-display font-bold text-xs" style={{ color: "#4A0E2E" }}>{rel.title}</div>
+                          <div className="text-[9px] font-mono mt-0.5" style={{ color: "#9D4A6E" }}>
+                            {rel.artist} · {rel.year} · {rel.tracks.length} tracks
+                          </div>
+                        </div>
+                        {selectedRelease.id === rel.id && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Interactive TVVinyl */}
-          <div className="py-2">
+          {/* Turntable + Controls */}
+          <div className="p-6 sm:p-8 flex flex-col items-center gap-6">
+            {/* YouTube iframe (hidden, audio only) */}
+            {youtubeEmbedUrl && (
+              <div className="sr-only" aria-hidden="true">
+                <iframe
+                  ref={iframeRef}
+                  key={`${selectedTrack.youtubeId}-${isPlaying}`}
+                  src={youtubeEmbedUrl}
+                  allow="autoplay; encrypted-media"
+                  width="1"
+                  height="1"
+                />
+              </div>
+            )}
+
+            {/* Vinyl */}
             <TVVinyl
               isPlaying={isPlaying}
               onToggle={handleTogglePlay}
-              primaryColor={accentColor}
+              primaryColor="#EC4899"
               audioAmplitude={audioAmplitude}
-              release={currentRelease}
+              release={selectedRelease}
               recipientName={displayName}
             />
-          </div>
 
-          {/* Play / Pause Action Button */}
-          <div className="pt-6 flex items-center gap-3">
-            <button
-              onClick={handleTogglePlay}
-              className="px-6 py-2.5 bg-[#F7F5EF] hover:bg-white text-[#09090B] font-mono text-xs font-bold uppercase tracking-widest rounded-[2px] transition-all cursor-pointer flex items-center gap-2 shadow-[0_0_20px_rgba(255,22,133,0.3)] active:scale-95"
-            >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-              <span>{isPlaying ? "LIFT NEEDLE (PAUSE)" : "DROP NEEDLE (PLAY)"}</span>
-            </button>
-          </div>
-
-          {/* Milestone Notice */}
-          {userState?.interactions?.listenedToVinyl && (
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-2.5 bg-white/5 border border-white/10 rounded-[2px] flex items-center gap-2 text-[11px] font-mono text-[#D9D0BE]"
-            >
-              <CheckCircle2 className="w-4 h-4 text-[#FF1685]" />
-              <span>VINYL INTERACTION RECORDED · MILESTONE COMPLETED</span>
-            </motion.div>
-          )}
-        </section>
-
-        {/* Release Selector Bar (consuming lib/releases.ts) */}
-        <section className="space-y-3 pt-2">
-          <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-[#AFA797] uppercase">
-            <span>OFFICIAL PRESSINGS ARCHIVE (BANDCAMP)</span>
-            <span>SELECT TO CHANGE LABEL</span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {TV_GIRL_RELEASES.slice(0, 8).map((rel, idx) => (
-              <button
-                key={rel.id}
-                onClick={() => setSelectedReleaseIdx(idx)}
-                className={`p-2.5 text-left rounded-[2px] border transition-all cursor-pointer ${
-                  selectedReleaseIdx === idx
-                    ? "bg-[#1C1C22] border-[var(--station-primary,#FF1685)] text-white"
-                    : "bg-[#121215] border-white/10 text-[#AFA797] hover:text-[#F7F5EF] hover:bg-white/5"
-                }`}
+            {/* Now Playing Info */}
+            <div className="text-center space-y-1">
+              <motion.div
+                key={selectedTrack.title}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="font-display font-black text-lg"
+                style={{ color: "#4A0E2E" }}
               >
-                <span className="font-display font-bold text-xs truncate block">
-                  {rel.title}
-                </span>
-                <span className="font-mono text-[9px] text-[#AFA797]/70 block mt-0.5">
-                  {rel.year} · {rel.typeLabel}
-                </span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Bottom Navigation Link */}
-        <section className="pt-4 pb-12">
-          <div className="p-4 bg-[#121215] border border-white/10 rounded-[2px] flex items-center justify-between flex-wrap gap-4 text-xs font-mono">
-            <div className="space-y-0.5">
-              <span className="text-[#AFA797] text-[10px] tracking-widest uppercase block">
-                NEXT STOP
-              </span>
-              <span className="text-[#F7F5EF]">
-                visit the archive to see what physical artifacts have unearthed.
-              </span>
+                {selectedTrack.title}
+              </motion.div>
+              <div className="text-xs font-mono" style={{ color: "#BE185D" }}>
+                {selectedRelease.artist} · Track {selectedTrack.trackNumber}/{selectedRelease.tracks.length}
+                {selectedTrack.durationSec ? ` · ${formatDuration(selectedTrack.durationSec)}` : ""}
+              </div>
+              {!selectedTrack.youtubeId && (
+                <div className="text-[10px] font-mono mt-1 px-3 py-1 rounded-full inline-flex items-center gap-1"
+                  style={{ background: "rgba(244,114,182,0.15)", color: "#9D4A6E" }}>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                  <span>Open on Bandcamp to listen</span>
+                </div>
+              )}
             </div>
 
-            <Link
-              href={`/${slug}/archive`}
-              className="px-4 py-2 bg-[#1C1C22] hover:bg-white/10 border border-white/20 text-white text-[11px] font-mono uppercase tracking-widest rounded-[2px] transition-all flex items-center gap-1.5"
-            >
+            {/* Playback Controls */}
+            <div className="flex items-center gap-4">
+              <button onClick={handlePrevTrack}
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{ background: "rgba(244,114,182,0.15)", color: "#EC4899" }}>
+                <SkipBack className="w-4 h-4 fill-current" />
+              </button>
+
+              <button onClick={handleTogglePlay}
+                className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95"
+                style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)", color: "#fff", boxShadow: "0 6px 24px rgba(236,72,153,0.5)" }}>
+                {isPlaying
+                  ? <Pause className="w-6 h-6 fill-white" />
+                  : <Play className="w-6 h-6 fill-white ml-0.5" />}
+              </button>
+
+              <button onClick={handleNextTrack}
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{ background: "rgba(244,114,182,0.15)", color: "#EC4899" }}>
+                <SkipForward className="w-4 h-4 fill-current" />
+              </button>
+
+              <button onClick={() => setIsMuted(v => !v)}
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{ background: "rgba(244,114,182,0.15)", color: isMuted ? "#9D4A6E" : "#EC4899" }}>
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Milestone Notice */}
+            {userState?.interactions?.listenedToVinyl && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="px-4 py-2.5 rounded-full flex items-center gap-2 text-[11px] font-mono"
+                style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.25)", color: "#BE185D" }}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />
+                <span>VINYL INTERACTION RECORDED · MILESTONE ✓</span>
+              </motion.div>
+            )}
+          </div>
+        </section>
+
+        {/* Full Track List */}
+        <section className="rounded-2xl overflow-hidden"
+          style={{ background: "rgba(255,240,245,0.75)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.25)" }}>
+          <button
+            className="w-full flex items-center justify-between px-5 py-4"
+            onClick={() => setShowTrackList(v => !v)}
+          >
+            <div className="flex items-center gap-2">
+              <Music className="w-4 h-4" style={{ color: "#EC4899" }} />
+              <span className="font-display font-bold text-sm" style={{ color: "#4A0E2E" }}>
+                TRACKLIST — {selectedRelease.title.toUpperCase()}
+              </span>
+            </div>
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${showTrackList ? "rotate-180" : ""}`}
+              style={{ color: "#EC4899" }}
+            />
+          </button>
+
+          <AnimatePresence>
+            {showTrackList && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="border-t"
+                style={{ borderColor: "rgba(244,114,182,0.2)" }}
+              >
+                <div className="p-3 space-y-1 max-h-72 overflow-y-auto">
+                  {selectedRelease.tracks.map((track) => (
+                    <button
+                      key={track.trackNumber}
+                      onClick={() => handleSelectTrack(track)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-left"
+                      style={{
+                        background: selectedTrack.trackNumber === track.trackNumber
+                          ? "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(192,132,252,0.1))"
+                          : "transparent",
+                        border: selectedTrack.trackNumber === track.trackNumber
+                          ? "1px solid rgba(236,72,153,0.3)"
+                          : "1px solid transparent",
+                      }}
+                    >
+                      <span className="font-mono text-[10px] w-5 text-right shrink-0" style={{ color: "#9D4A6E" }}>
+                        {selectedTrack.trackNumber === track.trackNumber && isPlaying
+                          ? "♪"
+                          : track.trackNumber}
+                      </span>
+                      <span className="font-display font-bold text-xs flex-1" style={{ color: "#4A0E2E" }}>
+                        {track.title}
+                      </span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {!track.youtubeId && (
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded" style={{ background: "rgba(244,114,182,0.15)", color: "#9D4A6E" }}>
+                            BC
+                          </span>
+                        )}
+                        {track.durationSec && (
+                          <span className="text-[10px] font-mono" style={{ color: "#9D4A6E" }}>
+                            {formatDuration(track.durationSec)}
+                          </span>
+                        )}
+                        {selectedTrack.trackNumber !== track.trackNumber && (
+                          <Play className="w-3 h-3" style={{ color: "#EC4899", opacity: 0.6 }} />
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="px-5 py-3 border-t flex items-center justify-between" style={{ borderColor: "rgba(244,114,182,0.2)" }}>
+                  <span className="text-[10px] font-mono" style={{ color: "#9D4A6E" }}>
+                    BC = Listen on Bandcamp · ♪ = Now Playing
+                  </span>
+                  <a href={selectedRelease.bandcampUrl} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-[10px] font-mono transition-opacity hover:opacity-80"
+                    style={{ color: "#EC4899" }}>
+                    <ExternalLink className="w-3 h-3" />
+                    <span>Open on Bandcamp</span>
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
+
+        {/* Bottom Navigation */}
+        <section className="pb-12">
+          <div className="p-4 rounded-2xl flex items-center justify-between flex-wrap gap-4"
+            style={{ background: "rgba(255,240,245,0.7)", border: "1.5px solid rgba(244,114,182,0.2)" }}>
+            <div className="space-y-0.5">
+              <span className="text-[10px] font-mono tracking-widest uppercase block" style={{ color: "#9D4A6E" }}>NEXT STOP</span>
+              <span className="text-sm font-serif italic" style={{ color: "#4A0E2E" }}>
+                visit the archive to unearth what&apos;s been left for you.
+              </span>
+            </div>
+            <Link href={`/${slug}/archive`}
+              className="px-5 py-2.5 rounded-full flex items-center gap-2 text-white text-xs font-mono uppercase tracking-widest transition-all hover:scale-105"
+              style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)", boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}>
               <span>GO TO ARCHIVE</span>
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </section>
       </main>
 
-      {/* Spotify Player Drawer */}
       <SpotifyPlayer isOpen={isSpotifyOpen} onClose={() => setIsSpotifyOpen(false)} />
     </div>
   );
