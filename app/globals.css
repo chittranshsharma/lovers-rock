@@ -1,0 +1,571 @@
+@import "tailwindcss";
+
+/* ============================================================ */
+/* TV GIRL DESIGN SYSTEM — Visual Tokens                        */
+/* ============================================================ */
+
+@layer base {
+  :root {
+    /* Base surfaces */
+    --tv-bg:      #09090B;
+    --tv-surface: #151518;
+    --tv-paper:   #EEE8DA;
+    --tv-cream:   #D9D0BE;
+    --tv-white:   #F7F5EF;
+    --tv-muted:   #AFA797;
+
+    /* Accent palette */
+    --tv-pink:    #FF1685;
+    --tv-blue:    #145BFF;
+    --tv-red:     #EA3D46;
+    --tv-orange:  #F36B21;
+    --tv-yellow:  #FFD51F;
+    --tv-cyan:    #20DDB6;
+    --tv-purple:  #A33CF2;
+
+    /* Active station (overridden by TVGirlExperience) */
+    --station-primary:   #145BFF;
+    --station-secondary: #20DDB6;
+    --station-bg-glow:   rgba(20,91,255,0.07);
+
+    /* Typography */
+    --font-display: var(--font-montserrat), "Montserrat", "Arial Black", sans-serif;
+    --font-body:    var(--font-baskerville), "Georgia", serif;
+    --font-mono:    var(--font-ibm-mono), "Courier New", monospace;
+
+    /* Layout */
+    --content-max:  1480px;
+    --page-padding: clamp(20px, 5vw, 80px);
+    --grid-gap:     clamp(12px, 2vw, 28px);
+
+    /* Effects */
+    --grain-opacity:  0.055;
+    --border-light:   rgba(247,245,239,0.13);
+    --border-accent:  rgba(255,22,133,0.4);
+
+    /* Motion */
+    --ease-editorial: cubic-bezier(.22,.61,.36,1);
+
+    /* Legacy compat aliases (used by existing components) */
+    --bg-color:       #09090B;
+    --text-primary:   #F7F5EF;
+    --text-secondary: #AFA797;
+    --accent-pink:    #FF1685;
+    --accent-orange:  #F36B21;
+    --accent-glow:    #145BFF;
+    --card-bg:        rgba(21,21,24,0.75);
+    --border-color:   rgba(247,245,239,0.13);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--tv-bg);
+    color: var(--tv-white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    /* Subtle station-reactive radial glow behind everything */
+    background-image: radial-gradient(
+      circle at 50% 30%,
+      var(--station-bg-glow),
+      transparent 55%
+    );
+    background-attachment: fixed;
+    transition: background-color 1.8s var(--ease-editorial),
+                background-image  1.8s var(--ease-editorial);
+  }
+}
+
+/* ============================================================ */
+/* Film Grain                                                    */
+/* ============================================================ */
+
+/* SVG noise texture overlay — preferred implementation */
+.film-grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 40;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("/textures/noise.svg");
+  background-size: 200px 200px;
+  animation: grain 0.2s steps(2) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, 2%); }
+  50%  { transform: translate(3%, -1%); }
+  75%  { transform: translate(-1%, 3%); }
+  100% { transform: translate(2%, -2%); }
+}
+
+/* ============================================================ */
+/* Typography Utilities                                          */
+/* ============================================================ */
+
+/* Huge compressed display headline */
+.tv-headline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  color: var(--tv-white);
+  text-transform: uppercase;
+}
+
+/* Italic editorial serif body text */
+.tv-body-serif {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* Monospace label/metadata text */
+.tv-mono {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Explicit Font Utilities */
+.font-display {
+  font-family: var(--font-montserrat), "Montserrat", "Arial Black", sans-serif !important;
+}
+
+.font-serif {
+  font-family: var(--font-baskerville), "Georgia", serif !important;
+}
+
+.font-mono {
+  font-family: var(--font-ibm-mono), "Courier New", monospace !important;
+}
+
+/* Legacy compat */
+.font-serif-italic {
+  font-family: var(--font-baskerville), "Georgia", serif !important;
+  font-style: italic;
+}
+
+/* ============================================================ */
+/* Border Language                                              */
+/* ============================================================ */
+
+.tv-border {
+  border: 1px solid var(--border-light);
+}
+
+.tv-border-accent {
+  border: 1px solid var(--station-primary);
+}
+
+/* ============================================================ */
+/* Physical Artifact Cards                                      */
+/* ============================================================ */
+
+/* Feels like a polaroid / clipping, not a SaaS card */
+.tv-card {
+  background: var(--tv-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  position: relative;
+}
+
+/* Slight imperfect rotation for physical feel */
+.tv-card-tilt-l { transform: rotate(-1.1deg); }
+.tv-card-tilt-r { transform: rotate(0.7deg);  }
+.tv-card-tilt-l2 { transform: rotate(-0.4deg); }
+
+/* Paper surface card */
+.tv-paper-card {
+  background: var(--tv-paper);
+  color: var(--tv-surface);
+  border: 1px solid rgba(17,17,19,0.25);
+  border-radius: 2px;
+  padding: 1.25rem 1.5rem;
+}
+
+/* ============================================================ */
+/* Buttons — Label/Sticker Style                                */
+/* ============================================================ */
+
+/* Primary action — black text on hot pink */
+.tv-btn-primary {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--tv-pink);
+  color: #09090B;
+  border: none;
+  border-radius: 2px;
+  padding: 0.6em 1.4em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background 200ms var(--ease-editorial),
+              transform  150ms var(--ease-editorial),
+              letter-spacing 150ms var(--ease-editorial);
+}
+
+.tv-btn-primary:hover {
+  background: var(--tv-white);
+  color: #09090B;
+  transform: translateX(3px);
+  letter-spacing: 0.18em;
+}
+
+/* Secondary — outlined cream */
+.tv-btn-secondary {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--tv-cream);
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  padding: 0.6em 1.4em;
+  transition: border-color 200ms, color 200ms, transform 150ms var(--ease-editorial);
+}
+
+.tv-btn-secondary:hover {
+  border-color: var(--station-primary);
+  color: var(--tv-white);
+  transform: translateX(2px);
+}
+
+/* ============================================================ */
+/* Glass Panel — used sparingly (Spotify panel, QR)            */
+/* ============================================================ */
+
+.glass-panel {
+  background: rgba(21,21,24,0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+}
+
+/* Legacy glass-chip used in some existing components */
+.glass-chip {
+  background: rgba(247,245,239,0.04);
+  border: 1px solid var(--border-light);
+  transition: all 0.28s var(--ease-editorial);
+}
+
+.glass-chip:hover {
+  background: rgba(247,245,239,0.09);
+  border-color: rgba(247,245,239,0.28);
+}
+
+/* ============================================================ */
+/* Station-Reactive Mood Chip                                   */
+/* ============================================================ */
+
+.mood-chip {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tv-cream);
+  border: 1px solid rgba(247, 245, 239, 0.18);
+  border-radius: 2px;
+  padding: 0.55em 1.1em;
+  background: #141417;
+  transition: border-color 180ms var(--ease-editorial),
+              color        180ms var(--ease-editorial),
+              transform    150ms var(--ease-editorial),
+              background   180ms var(--ease-editorial);
+  cursor: pointer;
+}
+
+.mood-chip:hover {
+  border-color: var(--station-primary);
+  color: var(--tv-white);
+  background: #1c1c22;
+  transform: translateY(-1px);
+}
+
+.mood-chip.active {
+  border-color: var(--station-primary);
+  background: #201520;
+  color: var(--tv-white);
+  box-shadow: 0 0 10px rgba(255, 22, 133, 0.3);
+}
+
+/* ============================================================ */
+/* Scanlines / CRT (selective — NOT global)                    */
+/* ============================================================ */
+
+.tv-scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.12) 2px,
+    rgba(0,0,0,0.12) 4px
+  );
+  z-index: 2;
+  border-radius: inherit;
+  opacity: 0.55;
+}
+
+/* Vignette */
+.tv-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0,0,0,0.55) 100%
+  );
+  z-index: 3;
+}
+
+/* Chromatic aberration text effect (use very selectively) */
+.tv-chroma {
+  position: relative;
+}
+
+.tv-chroma::before,
+.tv-chroma::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.35;
+}
+
+.tv-chroma::before {
+  color: var(--tv-pink);
+  transform: translate(-1.5px, 0);
+}
+
+.tv-chroma::after {
+  color: var(--tv-blue);
+  transform: translate(1.5px, 0);
+}
+
+/* ============================================================ */
+/* Signal Loss Overlay                                          */
+/* ============================================================ */
+
+@keyframes tv-static {
+  0%   { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes tv-signal-in {
+  0%   { opacity: 0; clip-path: inset(50% 0); }
+  40%  { opacity: 1; clip-path: inset(0 0); }
+  100% { opacity: 1; clip-path: inset(0 0); }
+}
+
+@keyframes tv-signal-out {
+  0%   { opacity: 1; clip-path: inset(0 0); }
+  60%  { opacity: 0.4; clip-path: inset(45% 0); }
+  100% { opacity: 0; clip-path: inset(50% 0); }
+}
+
+.tv-signal-loss {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #09090B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: tv-signal-in 0.15s var(--ease-editorial);
+}
+
+.tv-static-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image: url("/textures/noise.svg");
+  background-size: 120px 120px;
+  animation: tv-static 0.08s steps(1) infinite;
+  mix-blend-mode: screen;
+}
+
+/* ============================================================ */
+/* Vinyl Record                                                  */
+/* ============================================================ */
+
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.vinyl-spinning {
+  animation: vinyl-spin 2.4s linear infinite;
+}
+
+.vinyl-paused {
+  animation-play-state: paused;
+}
+
+/* ============================================================ */
+/* Text Motion                                                  */
+/* ============================================================ */
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.tv-ticker {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tv-ticker-inner {
+  display: flex;
+  animation: ticker 18s linear infinite;
+}
+
+/* Breathing / floating title (subtle) */
+@keyframes breathe {
+  0%, 100% { transform: translateY(0px);  opacity: 1; }
+  50%       { transform: translateY(-4px); opacity: 0.92; }
+}
+
+.breathing {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* Film jitter (subtle text movement) */
+@keyframes film-jitter {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(0.4px, -0.3px); }
+  40%  { transform: translate(-0.3px, 0.5px); }
+  60%  { transform: translate(0.5px, 0.2px); }
+  80%  { transform: translate(-0.2px, -0.4px); }
+  100% { transform: translate(0, 0); }
+}
+
+.film-jitter {
+  animation: film-jitter 0.12s steps(2) infinite;
+}
+
+/* Photo drop animation */
+@keyframes photo-drop {
+  from {
+    transform: translateY(-60px) rotate(var(--tilt, -1.2deg));
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) rotate(var(--tilt, -1.2deg));
+    opacity: 1;
+  }
+}
+
+.photo-drop {
+  animation: photo-drop 0.65s var(--ease-editorial) forwards;
+}
+
+/* Soft pulse (existing, kept for compat) */
+@keyframes softPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.98); }
+  50%       { opacity: 0.8; transform: scale(1.02); }
+}
+
+.animate-soft-pulse {
+  animation: softPulse 2.5s ease-in-out infinite;
+}
+
+/* ============================================================ */
+/* Editorial Layout Utilities                                   */
+/* ============================================================ */
+
+.tv-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(48px, 8vh, 120px) var(--page-padding);
+}
+
+.tv-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--tv-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================ */
+/* Accessibility                                                */
+/* ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--station-primary);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .film-grain,
+  .breathing,
+  .film-jitter,
+  .vinyl-spinning,
+  .tv-ticker-inner {
+    animation: none !important;
+  }
+
+  /* Restore default cursor on reduced-motion */
+  @media (pointer: fine) {
+    body, button, a, [role="button"] {
+      cursor: auto !important;
+    }
+  }
+}
+
+/* ============================================================ */
+/* Scrollbar                                                    */
+/* ============================================================ */
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(247,245,239,0.15);
+  border-radius: 999px;
+}
+
+/* ============================================================ */
+/* Selection                                                    */
+/* ============================================================ */
+
+::selection {
+  background: rgba(255,22,133,0.3);
+  color: var(--tv-white);
+}
