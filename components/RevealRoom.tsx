@@ -117,62 +117,7 @@ export default function RevealRoom({ slug }: RevealRoomProps) {
   };
 
   // If locked, render the clear guidance screen
-  if (!unlocked) {
-    return (
-      <div className="min-h-screen bg-[#09090B] text-[#F7F5EF] flex flex-col relative overflow-x-hidden select-none">
-        <CuteParticles color={accentColor} />
-        <SiteNav slug={slug} displayName={displayName} color={accentColor} isRevealReady={false} />
 
-        <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-md mx-auto space-y-6 relative z-10">
-          <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-[#AFA797]">
-            <Lock className="w-6 h-6" />
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="font-display font-black text-2xl uppercase tracking-tight text-white">
-              ONE LAST THING IS WAITING
-            </h1>
-            <p className="font-serif italic text-sm text-[#D9D0BE]">
-              this space unlocks once you&apos;ve experienced a few little moments in your world.
-            </p>
-          </div>
-
-          {/* Progress list */}
-          <div className="w-full space-y-2 text-xs font-mono text-left">
-            <div className="flex items-center justify-between p-3 bg-[#151518] rounded-[2px] border border-white/10">
-              <span>COMPLETE 2 MINI GAMES</span>
-              <span className={progress.gamesCount >= 2 ? "text-[#FF1685] font-bold" : "text-[#AFA797]"}>
-                {progress.gamesCount} / 2 {progress.gamesCount >= 2 ? "✓" : ""}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-3 bg-[#151518] rounded-[2px] border border-white/10">
-              <span>DROP NEEDLE IN /LISTEN</span>
-              <span className={progress.didListen ? "text-[#FF1685] font-bold" : "text-[#AFA797]"}>
-                {progress.didListen ? "DONE ✓" : "NOT YET"}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-3 bg-[#151518] rounded-[2px] border border-white/10">
-              <span>EXPLORE 1 ARTIFACT IN /ARCHIVE</span>
-              <span className={progress.didExploreArchive ? "text-[#FF1685] font-bold" : "text-[#AFA797]"}>
-                {progress.didExploreArchive ? "DONE ✓" : "NOT YET"}
-              </span>
-            </div>
-          </div>
-
-          <div className="pt-2 flex items-center gap-3">
-            <Link
-              href={`/${slug}/play`}
-              className="px-5 py-2.5 bg-white text-black font-mono text-xs font-bold uppercase tracking-widest rounded-[2px]"
-            >
-              FINISH GAMES →
-            </Link>
-          </div>
-        </main>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#09090B] text-[#F7F5EF] flex flex-col relative overflow-x-hidden select-none">

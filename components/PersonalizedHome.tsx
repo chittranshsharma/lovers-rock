@@ -108,8 +108,8 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none" style={{ background: "linear-gradient(160deg, #FFF0F5 0%, #FDF2F8 40%, #FCE7F3 100%)" }}>
-      {/* Film grain and sparse atmospheric particles (24 items total: tiny hearts, film dust, paper flecks) */}
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none bg-[#120912] text-[#FCE7F3]">
+      {/* Film grain and sparse atmospheric particles */}
       <CuteParticles color={accentColor} />
       <div className="tv-scanlines opacity-10 pointer-events-none" aria-hidden="true" />
 
@@ -124,19 +124,19 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
             slug={slug}
             displayName={displayName}
             color={accentColor}
-            isRevealReady={revealReady}
+            isRevealReady={true}
             onSpotifyToggle={() => setIsSpotifyOpen(!isSpotifyOpen)}
           />
         </motion.div>
       ) : (
         <header className="relative z-30 w-full max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-display font-black text-sm tracking-widest uppercase" style={{ color: "#4A0E2E" }}>
+            <span className="font-display font-black text-sm tracking-widest uppercase text-[#FCE7F3]">
               TV GIRL
             </span>
-            <Heart className="w-3 h-3 fill-[#EC4899] text-[#EC4899]" />
+            <Heart className="w-3.5 h-3.5 fill-[#EC4899] text-[#EC4899]" />
           </div>
-          <span className="font-mono text-[9px] tracking-widest uppercase" style={{ color: "#9D4A6E", opacity: 0.7 }}>
+          <span className="font-mono text-[9px] tracking-widest uppercase text-[#F472B6]/80">
             a little world, just for you
           </span>
         </header>
@@ -151,10 +151,10 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               key="pre-name-header"
               className="space-y-1 transition-all duration-300"
             >
-              <span className="font-mono text-[10px] tracking-widest uppercase block" style={{ color: "#9D4A6E" }}>
+              <span className="font-mono text-[10px] tracking-widest uppercase block text-[#F472B6]">
                 a special transmission
               </span>
-              <h1 className="font-display font-black text-5xl sm:text-7xl tracking-tighter uppercase leading-none" style={{ color: "#4A0E2E" }}>
+              <h1 className="font-display font-black text-5xl sm:text-7xl tracking-tighter uppercase leading-none text-[#FCE7F3]">
                 TV GIRL
               </h1>
             </div>
@@ -163,13 +163,13 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               key="post-name-header"
               className="space-y-1 transition-all duration-300 animate-in fade-in zoom-in-95"
             >
-              <span className="font-mono text-[10px] tracking-widest uppercase block font-bold" style={{ color: "#EC4899" }}>
+              <span className="font-mono text-[10px] tracking-widest uppercase block font-bold text-[#EC4899]">
                 FOR {displayName.toUpperCase()} ♡
               </span>
-              <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight uppercase leading-none" style={{ color: "#4A0E2E" }}>
+              <h1 className="font-display font-black text-4xl sm:text-6xl tracking-tight uppercase leading-none text-[#FCE7F3]">
                 {displayName.toUpperCase()}
               </h1>
-              <p className="font-serif italic text-sm sm:text-base pt-1" style={{ color: "#9D4A6E" }}>
+              <p className="font-serif italic text-sm sm:text-base pt-1 text-[#F472B6]">
                 &ldquo;welcome to your little corner.&rdquo;
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
             exit={{ opacity: 0, y: -10 }}
             className="w-full max-w-xs text-center space-y-3 pt-2"
           >
-            <p className="font-serif italic text-sm" style={{ color: "#9D4A6E" }}>
+            <p className="font-serif italic text-sm text-[#F472B6]">
               what&apos;s your name?
             </p>
 
@@ -211,15 +211,15 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
                   maxLength={28}
                   className="w-full px-4 py-3 text-center text-sm sm:text-base font-mono outline-none transition-colors rounded-xl"
                   style={{
-                    background: "rgba(255,240,245,0.85)",
-                    border: "1.5px solid rgba(236,72,153,0.35)",
-                    color: "#4A0E2E",
+                    background: "rgba(30,15,27,0.85)",
+                    border: "1.5px solid rgba(236,72,153,0.4)",
+                    color: "#FCE7F3",
                     backdropFilter: "blur(8px)",
-                    boxShadow: "0 2px 12px rgba(236,72,153,0.1)",
+                    boxShadow: "0 2px 16px rgba(236,72,153,0.2)",
                   }}
                 />
                 {nameInput.trim() && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm" style={{ color: "#EC4899" }}>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#EC4899]">
                     ♡
                   </span>
                 )}
@@ -252,21 +252,21 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               <Link
                 href={`/${slug}/play`}
                 className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
-                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
+                style={{ background: "rgba(30,15,27,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(236,72,153,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.15)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase text-[#F472B6]">
                     <span>01</span>
-                    <Gamepad2 className="w-3.5 h-3.5 transition-colors" style={{ color: "#EC4899" }} />
+                    <Gamepad2 className="w-3.5 h-3.5 transition-colors text-[#EC4899]" />
                   </div>
-                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase text-[#FCE7F3]">
                     🌸 PLAY
                   </h2>
-                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug text-[#F472B6]">
                     four little worlds waiting for you.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2 text-[#EC4899]">
                   <span>ENTER</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -276,21 +276,21 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               <Link
                 href={`/${slug}/listen`}
                 className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
-                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
+                style={{ background: "rgba(30,15,27,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(236,72,153,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.15)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase text-[#F472B6]">
                     <span>02</span>
-                    <Disc className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />
+                    <Disc className="w-3.5 h-3.5 text-[#EC4899]" />
                   </div>
-                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase text-[#FCE7F3]">
                     🎵 LISTEN
                   </h2>
-                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug text-[#F472B6]">
                     drop the needle on the late night record.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2 text-[#EC4899]">
                   <span>TUNE IN</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -300,49 +300,37 @@ export default function PersonalizedHome({ slug }: PersonalizedHomeProps) {
               <Link
                 href={`/${slug}/archive`}
                 className="group p-5 flex flex-col justify-between min-h-[140px] transition-all cursor-pointer rounded-2xl"
-                style={{ background: "rgba(255,240,245,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(244,114,182,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.1)" }}
+                style={{ background: "rgba(30,15,27,0.85)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(236,72,153,0.3)", boxShadow: "0 8px 28px rgba(236,72,153,0.15)" }}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase" style={{ color: "#9D4A6E" }}>
+                  <div className="flex items-center justify-between mb-2 text-[10px] font-mono tracking-widest uppercase text-[#F472B6]">
                     <span>03</span>
-                    <Archive className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />
+                    <Archive className="w-3.5 h-3.5 text-[#EC4899]" />
                   </div>
-                  <h2 className="font-display font-black text-lg tracking-wider uppercase" style={{ color: "#4A0E2E" }}>
+                  <h2 className="font-display font-black text-lg tracking-wider uppercase text-[#FCE7F3]">
                     📮 ARCHIVE
                   </h2>
-                  <p className="font-serif italic text-[11px] mt-1 leading-snug" style={{ color: "#9D4A6E" }}>
+                  <p className="font-serif italic text-[11px] mt-1 leading-snug text-[#F472B6]">
                     polaroids, tickets, and things left behind.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2" style={{ color: "#EC4899" }}>
+                <div className="flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest pt-2 text-[#EC4899]">
                   <span>UNEARTH</span>
                   <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>
             </div>
 
-            {/* Bottom Discovered Mystery Object */}
+            {/* Bottom Discovered Mystery Object: Always unlocked */}
             <div className="pt-2 text-center">
-              {revealReady ? (
-                <Link
-                  href={`/${slug}/reveal`}
-                  className="px-7 py-3.5 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-full transition-all inline-flex items-center gap-2 animate-pulse"
-                  style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)", boxShadow: "0 6px 24px rgba(236,72,153,0.55)" }}
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>OPEN THE LAST THING ♡</span>
-                </Link>
-              ) : (
-                <button
-                  onClick={() => setShowLockedModal(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
-                  style={{ background: "rgba(244,114,182,0.12)", border: "1px solid rgba(236,72,153,0.25)", color: "#9D4A6E" }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ background: "#EC4899" }} />
-                  <Lock className="w-2.5 h-2.5" />
-                  <span>SOMETHING IS STILL LOCKED</span>
-                </button>
-              )}
+              <Link
+                href={`/${slug}/reveal`}
+                className="px-7 py-3.5 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-full transition-all inline-flex items-center gap-2 animate-pulse cursor-pointer"
+                style={{ background: "linear-gradient(135deg, #EC4899, #DB2777)", boxShadow: "0 6px 24px rgba(236,72,153,0.55)" }}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>OPEN THE LAST THING ♡</span>
+              </Link>
             </div>
           </motion.div>
         )}

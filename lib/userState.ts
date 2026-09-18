@@ -123,16 +123,11 @@ export function saveUserState(state: Partial<UserState>, slug = ""): UserState {
  * 2. Placed needle / listened to audio in the Vinyl room
  * 3. Opened at least 1 Archive artifact
  */
-export function isRevealUnlocked(state: UserState): boolean {
-  if (!state) return false;
-  const gamesCount = Object.values(state.completedGames || {}).filter(Boolean).length;
-  const didListen = state.interactions?.listenedToVinyl ?? false;
-  const didExploreArchive = (state.interactions?.openedArchiveItems?.length ?? 0) >= 1;
-
-  return gamesCount >= 2 && didListen && didExploreArchive;
+export function isRevealUnlocked(state?: UserState): boolean {
+  return true;
 }
 
-export function getRevealProgress(state: UserState): {
+export function getRevealProgress(state?: UserState): {
   gamesCount: number;
   gamesNeeded: number;
   didListen: boolean;
@@ -142,13 +137,12 @@ export function getRevealProgress(state: UserState): {
   const gamesCount = Object.values(state?.completedGames || {}).filter(Boolean).length;
   const didListen = state?.interactions?.listenedToVinyl ?? false;
   const didExploreArchive = (state?.interactions?.openedArchiveItems?.length ?? 0) >= 1;
-  const isUnlocked = gamesCount >= 2 && didListen && didExploreArchive;
 
   return {
     gamesCount,
-    gamesNeeded: 2,
+    gamesNeeded: 0,
     didListen,
     didExploreArchive,
-    isUnlocked,
+    isUnlocked: true,
   };
 }

@@ -93,26 +93,15 @@ export default function SiteNav({
             );
           })}
 
-          {/* Reveal status badge in nav */}
-          {isRevealReady ? (
-            <Link
-              href={`/${cleanSlug}/reveal`}
-              className="px-2.5 sm:px-3 py-1 text-[11px] font-mono tracking-wider uppercase transition-all rounded-[2px] cursor-pointer flex items-center gap-1.5 animate-pulse bg-white/10 text-white border border-white/30"
-              style={{ color }}
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>THE LAST THING ♡</span>
-            </Link>
-          ) : (
-            <Link
-              href={`/${cleanSlug}#discover`}
-              className="px-2 py-1 text-[10px] font-mono tracking-wider uppercase text-[#AFA797]/60 hover:text-[#AFA797] flex items-center gap-1 transition-colors"
-              title="Locked until you explore more"
-            >
-              <Lock className="w-2.5 h-2.5" />
-              <span>LOCKED</span>
-            </Link>
-          )}
+          {/* Reveal link in nav */}
+          <Link
+            href={`/${cleanSlug}/reveal`}
+            className="px-2.5 sm:px-3 py-1 text-[11px] font-mono tracking-wider uppercase transition-all rounded-[2px] cursor-pointer flex items-center gap-1.5 animate-pulse bg-white/10 text-white border border-white/30"
+            style={{ color }}
+          >
+            <Sparkles className="w-3 h-3" />
+            <span>THE LAST THING ♡</span>
+          </Link>
         </nav>
 
         {/* Audio & Tape Player Controls */}

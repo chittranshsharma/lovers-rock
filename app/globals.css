@@ -6,13 +6,13 @@
 
 @layer base {
   :root {
-    /* Base surfaces — dreamy blush pinks */
-    --tv-bg:      #FFF0F5;
-    --tv-surface: #FDF2F8;
-    --tv-paper:   #FCE7F3;
+    /* Base surfaces — deep velvety dark plum sakura theme */
+    --tv-bg:      #120912;
+    --tv-surface: #1E0F1B;
+    --tv-paper:   #281424;
     --tv-cream:   #F9A8D4;
-    --tv-white:   #4A0E2E;
-    --tv-muted:   #9D4A6E;
+    --tv-white:   #FCE7F3;
+    --tv-muted:   #F472B6;
 
     /* Accent palette — sakura rose */
     --tv-pink:    #EC4899;
@@ -26,7 +26,7 @@
     /* Active station (overridden per component) */
     --station-primary:   #EC4899;
     --station-secondary: #C084FC;
-    --station-bg-glow:   rgba(236,72,153,0.08);
+    --station-bg-glow:   rgba(236,72,153,0.12);
 
     /* Typography */
     --font-display: var(--font-montserrat), "Montserrat", "Arial Black", sans-serif;
@@ -40,21 +40,21 @@
 
     /* Effects */
     --grain-opacity:  0.025;
-    --border-light:   rgba(236,72,153,0.18);
-    --border-accent:  rgba(236,72,153,0.55);
+    --border-light:   rgba(236,72,153,0.25);
+    --border-accent:  rgba(236,72,153,0.6);
 
     /* Motion */
     --ease-editorial: cubic-bezier(.22,.61,.36,1);
 
     /* Legacy compat aliases (used by existing components) */
-    --bg-color:       #FFF0F5;
-    --text-primary:   #4A0E2E;
-    --text-secondary: #9D4A6E;
+    --bg-color:       #120912;
+    --text-primary:   #FCE7F3;
+    --text-secondary: #F472B6;
     --accent-pink:    #EC4899;
     --accent-orange:  #FB923C;
     --accent-glow:    #A855F7;
-    --card-bg:        rgba(255,240,245,0.85);
-    --border-color:   rgba(236,72,153,0.18);
+    --card-bg:        rgba(30,15,27,0.85);
+    --border-color:   rgba(236,72,153,0.25);
   }
 
   html {
@@ -169,7 +169,7 @@
 /* ============================================================ */
 
 .tv-card {
-  background: rgba(255,240,245,0.85);
+  background: rgba(30,15,27,0.85);
   border: 1px solid var(--border-light);
   border-radius: 8px;
   position: relative;
@@ -182,9 +182,9 @@
 .tv-card-tilt-l2 { transform: rotate(-0.4deg); }
 
 .tv-paper-card {
-  background: #FCE7F3;
-  color: #4A0E2E;
-  border: 1px solid rgba(236,72,153,0.25);
+  background: #281424;
+  color: #FCE7F3;
+  border: 1px solid rgba(236,72,153,0.3);
   border-radius: 8px;
   padding: 1.25rem 1.5rem;
 }
@@ -223,8 +223,8 @@
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: rgba(255,240,245,0.7);
-  color: #BE185D;
+  background: rgba(30,15,27,0.7);
+  color: #FCE7F3;
   border: 1.5px solid rgba(236,72,153,0.3);
   border-radius: 999px;
   padding: 0.6em 1.4em;
@@ -242,22 +242,22 @@
 /* ============================================================ */
 
 .glass-panel {
-  background: rgba(255,240,245,0.75);
+  background: rgba(30,15,27,0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(244,114,182,0.3);
-  box-shadow: 0 8px 40px rgba(236,72,153,0.12);
+  box-shadow: 0 8px 40px rgba(236,72,153,0.25);
 }
 
 .glass-chip {
-  background: rgba(255,240,245,0.6);
-  border: 1px solid rgba(236,72,153,0.2);
+  background: rgba(30,15,27,0.7);
+  border: 1px solid rgba(236,72,153,0.25);
   transition: all 0.28s var(--ease-editorial);
 }
 
 .glass-chip:hover {
-  background: rgba(255,240,245,0.9);
-  border-color: rgba(236,72,153,0.45);
+  background: rgba(45,20,39,0.9);
+  border-color: rgba(236,72,153,0.5);
 }
 
 /* ============================================================ */
@@ -269,11 +269,11 @@
   font-size: 0.65rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #BE185D;
-  border: 1px solid rgba(236,72,153,0.25);
+  color: #FCE7F3;
+  border: 1px solid rgba(236,72,153,0.3);
   border-radius: 999px;
   padding: 0.55em 1.2em;
-  background: rgba(255,240,245,0.7);
+  background: rgba(30,15,27,0.7);
   transition: border-color 180ms var(--ease-editorial),
               background   180ms var(--ease-editorial),
               transform    150ms var(--ease-editorial);
@@ -282,15 +282,15 @@
 
 .mood-chip:hover {
   border-color: #EC4899;
-  background: rgba(255,240,245,0.95);
+  background: rgba(45,20,39,0.95);
   transform: translateY(-1px);
 }
 
 .mood-chip.active {
   border-color: #EC4899;
-  background: linear-gradient(135deg, rgba(236,72,153,0.15), rgba(192,132,252,0.15));
-  color: #9D174D;
-  box-shadow: 0 0 12px rgba(236,72,153,0.25);
+  background: linear-gradient(135deg, rgba(236,72,153,0.3), rgba(192,132,252,0.2));
+  color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(236,72,153,0.35);
 }
 
 /* ============================================================ */

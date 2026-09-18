@@ -89,9 +89,8 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none"
-      style={{ background: "linear-gradient(160deg, #FFF0F5 0%, #FDF2F8 40%, #FCE7F3 100%)" }}>
-      <CuteParticles color="#F472B6" />
+    <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none bg-[#120912] text-[#FCE7F3]">
+      <CuteParticles color="#EC4899" />
 
       <SiteNav
         slug={slug}
@@ -106,68 +105,44 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
         {/* Header */}
         <section className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-mono tracking-widest uppercase"
-            style={{ background: "rgba(244,114,182,0.15)", border: "1px solid rgba(236,72,153,0.3)", color: "#BE185D" }}>
-            <Gamepad2 className="w-3 h-3" />
+            style={{ background: "rgba(236,72,153,0.15)", border: "1px solid rgba(236,72,153,0.3)", color: "#F472B6" }}>
+            <Gamepad2 className="w-3.5 h-3.5 text-[#EC4899]" />
             <span>PLAY ROOM</span>
-            <span>·</span>
-            <span>{totalCompleted} OF 4 COMPLETED</span>
           </div>
 
-          <h1 className="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight" style={{ color: "#4A0E2E" }}>
+          <h1 className="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-[#FCE7F3]">
             FOUR LITTLE WORLDS
           </h1>
-          <p className="font-serif italic text-sm max-w-md mx-auto" style={{ color: "#9D4A6E" }}>
+          <p className="font-serif italic text-sm max-w-md mx-auto text-[#F472B6]">
             play in any order. each one is a tiny experience made for you, {displayName}.
           </p>
         </section>
 
-        {/* Progress row */}
-        <section className="grid grid-cols-4 gap-2">
-          {TABS.map((tab) => (
-            <div key={tab.id}
-              className="rounded-xl p-2.5 text-center transition-all"
-              style={{
-                background: tabCompleted[tab.id]
-                  ? "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(192,132,252,0.1))"
-                  : "rgba(255,240,245,0.7)",
-                border: tabCompleted[tab.id]
-                  ? "1.5px solid rgba(236,72,153,0.4)"
-                  : "1.5px solid rgba(244,114,182,0.2)",
-              }}>
-              <div className="text-lg">{tabCompleted[tab.id] ? "✅" : tab.emoji}</div>
-              <div className="text-[8px] font-mono mt-0.5" style={{ color: tabCompleted[tab.id] ? "#EC4899" : "#9D4A6E" }}>
-                {tabCompleted[tab.id] ? "DONE" : "PLAY"}
-              </div>
-            </div>
-          ))}
-        </section>
-
         {/* Tab Switcher */}
         <section className="space-y-3">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-mono tracking-wide uppercase transition-all"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-mono tracking-wide uppercase transition-all cursor-pointer"
                 style={{
                   background: activeTab === tab.id
                     ? "linear-gradient(135deg, #EC4899, #DB2777)"
-                    : "rgba(244,114,182,0.12)",
-                  color: activeTab === tab.id ? "white" : "#BE185D",
-                  border: activeTab === tab.id ? "none" : "1px solid rgba(236,72,153,0.25)",
+                    : "rgba(30,15,27,0.8)",
+                  color: activeTab === tab.id ? "white" : "#F472B6",
+                  border: activeTab === tab.id ? "none" : "1px solid rgba(236,72,153,0.3)",
                   boxShadow: activeTab === tab.id ? "0 4px 16px rgba(236,72,153,0.4)" : "none",
                 }}
               >
                 <span>{tab.emoji}</span>
                 <span>{tab.label}</span>
-                {tabCompleted[tab.id] && <CheckCircle2 className="w-3 h-3" />}
               </button>
             ))}
           </div>
 
           {/* Active description */}
-          <p className="text-[11px] font-serif italic" style={{ color: "#9D4A6E" }}>
+          <p className="text-xs text-center font-serif italic text-[#F472B6]/80">
             {TABS.find(t => t.id === activeTab)?.description}
           </p>
         </section>
@@ -186,7 +161,7 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
                 <BlossomCatcher
                   displayName={displayName}
                   color={accentColor}
-                  isAlreadyCompleted={tabCompleted.blossom}
+                  isAlreadyCompleted={false}
                   onComplete={() => markComplete("blossom")}
                 />
               )}
@@ -194,7 +169,7 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
                 <DreamDateReceipt
                   displayName={displayName}
                   color={accentColor}
-                  isAlreadyCompleted={tabCompleted.receipt}
+                  isAlreadyCompleted={false}
                   onComplete={() => markComplete("receipt")}
                 />
               )}
@@ -202,7 +177,7 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
                 <OrigamiFortune
                   displayName={displayName}
                   color={accentColor}
-                  isAlreadyCompleted={tabCompleted.fortune}
+                  isAlreadyCompleted={false}
                   onComplete={() => markComplete("fortune")}
                 />
               )}
@@ -210,7 +185,7 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
                 <LofiChimePad
                   displayName={displayName}
                   color={accentColor}
-                  isAlreadyCompleted={tabCompleted.chime}
+                  isAlreadyCompleted={false}
                   onComplete={() => markComplete("chime")}
                 />
               )}
@@ -218,18 +193,16 @@ export default function PlayRoom({ slug }: PlayRoomProps) {
           </AnimatePresence>
         </section>
 
-        {/* Bottom progression */}
+        {/* Bottom Navigation */}
         <section className="pb-12">
           <div className="p-4 rounded-2xl flex items-center justify-between flex-wrap gap-4"
-            style={{ background: "rgba(255,240,245,0.7)", border: "1.5px solid rgba(244,114,182,0.2)" }}>
+            style={{ background: "rgba(30,15,27,0.85)", border: "1.5px solid rgba(236,72,153,0.25)" }}>
             <div className="space-y-0.5">
-              <span className="text-[10px] font-mono tracking-widest uppercase block" style={{ color: "#9D4A6E" }}>
-                WORLD PROGRESS
+              <span className="text-[10px] font-mono tracking-widest uppercase block text-[#F472B6]">
+                YOUR WORLD
               </span>
-              <span className="text-sm font-serif italic" style={{ color: "#4A0E2E" }}>
-                {totalCompleted >= 2
-                  ? "you found enough little things. drop the needle in /listen to unlock the final reveal."
-                  : `complete ${2 - totalCompleted} more world${2 - totalCompleted > 1 ? "s" : ""} to unseal the final reveal.`}
+              <span className="text-sm font-serif italic text-[#FCE7F3]">
+                play whenever you like — or tune into music when you&apos;re ready.
               </span>
             </div>
 

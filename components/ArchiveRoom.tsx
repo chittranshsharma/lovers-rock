@@ -226,142 +226,102 @@ export default function ArchiveRoom({ slug }: ArchiveRoomProps) {
             </div>
           </div>
 
-          {/* Artifact 03: Mixtape Cassette (Progressive: Unearths from Vibe/Picks) */}
+          {/* Artifact 03: Mixtape Cassette */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-[#AFA797] uppercase">
               <span>03 // CASSETTE MIXTAPE</span>
-              <span>{picksCompleted || heartsCompleted ? "UNEARTHED ✓" : "LOCKED"}</span>
+              <span className="text-[#FF1685]">UNEARTHED ♡</span>
             </div>
 
-            {picksCompleted || heartsCompleted ? (
-              <div
-                onClick={() => markItemOpened("cassette-01")}
-                className="p-5 bg-[#141418] border border-white/20 rounded-[2px] shadow-lg cursor-pointer space-y-3 transition-transform hover:-translate-y-1"
-                style={{ transform: "rotate(-0.8deg)" }}
-              >
-                {/* Clear cassette window */}
-                <div className="p-3 bg-[#0A0A0D] border border-white/15 rounded-[2px] flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full bg-white/40 animate-spin-slow" />
-                  </div>
-                  <div className="text-center">
-                    <span className="text-[10px] font-mono font-bold text-white tracking-widest block uppercase">
-                      LATE NIGHT MIX FOR {displayName.toUpperCase()}
-                    </span>
-                    <span className="text-[8px] font-mono text-[#AFA797] uppercase tracking-wider">
-                      C-60 · TYPE I FERRIC · {isRain ? "RAIN EDITION" : "SUNSET EDITION"}
-                    </span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full bg-white/40 animate-spin-slow" />
-                  </div>
+            <div
+              onClick={() => markItemOpened("cassette-01")}
+              className="p-5 bg-[#141418] border border-white/20 rounded-[2px] shadow-lg cursor-pointer space-y-3 transition-transform hover:-translate-y-1"
+              style={{ transform: "rotate(-0.8deg)" }}
+            >
+              {/* Clear cassette window */}
+              <div className="p-3 bg-[#0A0A0D] border border-white/15 rounded-[2px] flex items-center justify-between">
+                <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-white/40 animate-spin-slow" />
                 </div>
+                <div className="text-center">
+                  <span className="text-[10px] font-mono font-bold text-white tracking-widest block uppercase">
+                    LATE NIGHT MIX FOR {displayName.toUpperCase()}
+                  </span>
+                  <span className="text-[8px] font-mono text-[#AFA797] uppercase tracking-wider">
+                    C-60 · TYPE I FERRIC · {isRain ? "RAIN EDITION" : "SUNSET EDITION"}
+                  </span>
+                </div>
+                <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-white/40 animate-spin-slow" />
+                </div>
+              </div>
 
-                <div className="space-y-1 pt-1 text-[10px] font-mono text-[#D9D0BE]">
-                  {mixtapeTracks.map((t, idx) => (
-                    <p key={idx} className="truncate">
-                      {t}
-                    </p>
-                  ))}
-                </div>
+              <div className="space-y-1 pt-1 text-[10px] font-mono text-[#D9D0BE]">
+                {mixtapeTracks.map((t, idx) => (
+                  <p key={idx} className="truncate">
+                    {t}
+                  </p>
+                ))}
               </div>
-            ) : (
-              <div className="p-6 bg-[#0D0D10] border border-dashed border-white/10 rounded-[2px] text-center space-y-2 flex flex-col items-center justify-center min-h-[160px]">
-                <span className="text-[10px] font-mono text-[#AFA797] uppercase tracking-widest">
-                  [ UNEARTHS AFTER VIBE PICKS ]
-                </span>
-                <Link
-                  href={`/${slug}/play`}
-                  className="text-xs font-mono text-[#FF1685] hover:underline uppercase"
-                >
-                  Go to /play →
-                </Link>
-              </div>
-            )}
+            </div>
           </div>
 
-          {/* Artifact 04: Folded Creased Note (Progressive: Unearths from Scratch Card) */}
+          {/* Artifact 04: Folded Creased Note */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-[#AFA797] uppercase">
               <span>04 // FOLDED LETTER</span>
-              <span>{scratchCompleted ? "UNEARTHED ✓" : "LOCKED"}</span>
+              <span className="text-[#FF1685]">UNFOLD ♡</span>
             </div>
 
-            {scratchCompleted ? (
-              <div
-                onClick={() => {
-                  setLetterOpen(!letterOpen);
-                  markItemOpened("letter-01");
-                }}
-                className="p-5 bg-[#EEE8DA] text-[#111113] rounded-[2px] shadow-lg cursor-pointer transition-transform hover:-translate-y-1 min-h-[160px] flex flex-col justify-between"
-                style={{ transform: "rotate(1.3deg)" }}
-              >
-                <div className="flex items-center justify-between border-b border-black/15 pb-1 text-[9px] font-mono text-[#111113]/60 uppercase">
-                  <span>CREASED PAPER DISPATCH</span>
-                  <span>[ {letterOpen ? "FOLD" : "UNFOLD"} ]</span>
-                </div>
+            <div
+              onClick={() => {
+                setLetterOpen(!letterOpen);
+                markItemOpened("letter-01");
+              }}
+              className="p-5 bg-[#EEE8DA] text-[#111113] rounded-[2px] shadow-lg cursor-pointer transition-transform hover:-translate-y-1 min-h-[160px] flex flex-col justify-between"
+              style={{ transform: "rotate(1.3deg)" }}
+            >
+              <div className="flex items-center justify-between border-b border-black/15 pb-1 text-[9px] font-mono text-[#111113]/60 uppercase">
+                <span>CREASED PAPER DISPATCH</span>
+                <span>[ {letterOpen ? "FOLD" : "UNFOLD"} ]</span>
+              </div>
 
-                <div className="py-2">
-                  <p className="font-serif italic text-xs sm:text-sm text-[#111113] leading-relaxed whitespace-pre-line">
-                    {letterOpen
-                      ? `p.s.
+              <div className="py-2">
+                <p className="font-serif italic text-xs sm:text-sm text-[#111113] leading-relaxed whitespace-pre-line">
+                  {letterOpen
+                    ? `p.s.
 
 i hope today was gentle with you. and if it wasn't, i hope this little world made it feel a little softer, ${displayName}.`
-                      : "a small handwritten note is folded inside. [click to unfold]"}
-                  </p>
-                </div>
+                    : "a small handwritten note is folded inside. [click to unfold]"}
+                </p>
+              </div>
 
-                <div className="text-right text-[9px] font-mono text-[#111113]/40 uppercase tracking-widest">
-                  SEALED IN CONFIDENCE ♡
-                </div>
+              <div className="text-right text-[9px] font-mono text-[#111113]/40 uppercase tracking-widest">
+                SEALED IN CONFIDENCE ♡
               </div>
-            ) : (
-              <div className="p-6 bg-[#0D0D10] border border-dashed border-white/10 rounded-[2px] text-center space-y-2 flex flex-col items-center justify-center min-h-[160px]">
-                <span className="text-[10px] font-mono text-[#AFA797] uppercase tracking-widest">
-                  [ UNEARTHS AFTER SCRATCH CARD ]
-                </span>
-                <Link
-                  href={`/${slug}/play`}
-                  className="text-xs font-mono text-[#FF1685] hover:underline uppercase"
-                >
-                  Scratch card in /play →
-                </Link>
-              </div>
-            )}
+            </div>
           </div>
         </section>
 
-        {/* Bottom Milestone Status */}
+        {/* Bottom Navigation */}
         <section className="pt-6 pb-12">
           <div className="p-4 bg-[#121215] border border-white/10 rounded-[2px] flex items-center justify-between flex-wrap gap-4 text-xs font-mono">
             <div className="space-y-0.5">
               <span className="text-[#AFA797] text-[10px] tracking-widest uppercase block">
-                ARCHIVE MILESTONE
+                YOUR ARCHIVE
               </span>
               <span className="text-[#F7F5EF]">
-                {(userState?.interactions?.openedArchiveItems?.length ?? 0) >= 1
-                  ? "artifact explored. milestone completed."
-                  : "click any artifact above to record this milestone."}
+                unearth these artifacts whenever you like.
               </span>
             </div>
 
-            {revealReady ? (
-              <Link
-                href={`/${slug}/reveal`}
-                className="px-5 py-2.5 bg-[#FF1685] hover:bg-[#FF3596] text-white text-[11px] font-mono font-bold uppercase tracking-widest rounded-[2px] transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(255,22,133,0.4)] animate-pulse"
-              >
-                <span>OPEN THE LAST THING ♡</span>
-                <Sparkles className="w-3.5 h-3.5" />
-              </Link>
-            ) : (
-              <Link
-                href={`/${slug}`}
-                className="px-4 py-2 bg-[#1C1C22] hover:bg-white/10 border border-white/20 text-white text-[11px] font-mono uppercase tracking-widest rounded-[2px] transition-all flex items-center gap-1.5"
-              >
-                <span>RETURN HOME</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            )}
+            <Link
+              href={`/${slug}/reveal`}
+              className="px-5 py-2.5 bg-[#FF1685] hover:bg-[#FF3596] text-white text-[11px] font-mono font-bold uppercase tracking-widest rounded-[2px] transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(255,22,133,0.4)] animate-pulse"
+            >
+              <span>OPEN THE LAST THING ♡</span>
+              <Sparkles className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </section>
       </main>
