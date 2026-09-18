@@ -118,8 +118,10 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
   const theme = getTheme("tv-girl");
   const revealReady = userState ? isRevealUnlocked(userState) : false;
 
-  const youtubeEmbedUrl = selectedTrack.youtubeId
-    ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&modestbranding=1&rel=0&enablejsapi=1`
+  const youtubeEmbedUrl = selectedRelease.youtubePlaylistId
+    ? `https://www.youtube.com/embed/videoseries?list=${selectedRelease.youtubePlaylistId}&index=${Math.max(0, selectedTrack.trackNumber - 1)}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&enablejsapi=1`
+    : selectedTrack.youtubeId
+    ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`
     : null;
 
   return (
@@ -219,21 +221,21 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
           {/* Turntable + Controls + Video Screen */}
           <div className="p-6 sm:p-8 flex flex-col items-center gap-6">
 
-            {/* Visible CRT Video Player Monitor for direct browser playback */}
-            {selectedTrack.youtubeId ? (
+            {/* Visible CRT Video Player Monitor for direct browser playback (YouTube Playlist / Video) */}
+            {youtubeEmbedUrl ? (
               <div className="w-full max-w-md aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-[#EC4899]/40 relative bg-black">
                 <iframe
                   ref={iframeRef}
-                  key={`${selectedTrack.youtubeId}-${isPlaying}`}
-                  src={`https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`}
-                  title={selectedTrack.title}
+                  key={`${selectedRelease.id}-${selectedRelease.youtubePlaylistId || selectedTrack.youtubeId}-${selectedTrack.trackNumber}-${isPlaying}`}
+                  src={youtubeEmbedUrl}
+                  title={`${selectedRelease.title} - ${selectedTrack.title}`}
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               </div>
             ) : (
-              /* Vinyl Spinning view when no direct video */
+              /* Vinyl Spinning view when no direct video/playlist */
               <TVVinyl
                 isPlaying={isPlaying}
                 onToggle={handleTogglePlay}
@@ -261,7 +263,18 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
 
               {/* Action links */}
               <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
-                {selectedTrack.youtubeId && (
+                {selectedRelease.youtubePlaylistUrl ? (
+                  <a
+                    href={selectedRelease.youtubePlaylistUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-mono px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer"
+                    style={{ background: "rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.4)", color: "#FCE7F3" }}
+                  >
+                    <Play className="w-3 h-3 fill-current text-[#EC4899]" />
+                    <span>OPEN ON YOUTUBE</span>
+                  </a>
+                ) : selectedTrack.youtubeId ? (
                   <a
                     href={`https://www.youtube.com/watch?v=${selectedTrack.youtubeId}`}
                     target="_blank"
@@ -272,7 +285,7 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
                     <Play className="w-3 h-3 fill-current text-[#EC4899]" />
                     <span>PLAY ON YOUTUBE</span>
                   </a>
-                )}
+                ) : null}
                 <a
                   href={selectedRelease.bandcampUrl}
                   target="_blank"

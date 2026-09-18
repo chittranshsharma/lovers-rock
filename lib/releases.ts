@@ -29,6 +29,8 @@ export interface TVGirlRelease {
   year: number;
   bandcampUrl: string;
   spotifyQuery?: string;
+  youtubePlaylistId?: string;
+  youtubePlaylistUrl?: string;
   description?: string;
   tracks: Track[];
 }
@@ -43,6 +45,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2014,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/french-exit",
     spotifyQuery: "TV Girl French Exit",
+    youtubePlaylistId: "OLAK5uy_n6vsG4WGUle0wyAu-h7XXY08emxILPkVM",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_n6vsG4WGUle0wyAu-h7XXY08emxILPkVM",
     description: "Debut studio album that defined the TV Girl sampledelic signature sound.",
     tracks: [
       { trackNumber: 1, title: "Lovers Rock",         youtubeId: "JZ7-_tFXGbE", durationSec: 215 },
@@ -68,6 +72,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2016,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/who-really-cares",
     spotifyQuery: "TV Girl Who Really Cares",
+    youtubePlaylistId: "OLAK5uy_lHoEKZIFQFk3y5hQZHFioi0oIjn0hMY8E",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_lHoEKZIFQFk3y5hQZHFioi0oIjn0hMY8E",
     description: "Breakout sophomore album exploring modern romance, heartbreak, and cynicism.",
     tracks: [
       { trackNumber: 1,  title: "Not Allowed",             youtubeId: "WW5oiWZ7S0Y", durationSec: 196 },
@@ -91,6 +97,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2018,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/death-of-a-party-girl",
     spotifyQuery: "TV Girl Death of a Party Girl",
+    youtubePlaylistId: "OLAK5uy_msdenOW2WwdNMLCUO_B6E2m_aHit0V-Vo",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_msdenOW2WwdNMLCUO_B6E2m_aHit0V-Vo",
     description: "Third studio album chronicling bittersweet party culture and melancholia.",
     tracks: [
       { trackNumber: 1,  title: "Blue Hair",            youtubeId: "bwKe1FcbpNk", durationSec: 188 },
@@ -114,6 +122,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2023,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/grapes-upon-the-vine",
     spotifyQuery: "TV Girl Grapes Upon The Vine",
+    youtubePlaylistId: "OLAK5uy_nq9baRDIGdWKknnKwAU_EOXcIlQQpDTQA",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_nq9baRDIGdWKknnKwAU_EOXcIlQQpDTQA",
     description: "Sample-heavy fourth studio album infused with gospel vocal samples.",
     tracks: [
       { trackNumber: 1, title: "All the Way Through",     youtubeId: "UkYtHjGf3NU", durationSec: 201 },
@@ -136,6 +146,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2024,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/fauxllennium",
     spotifyQuery: "TV Girl George Clanton Fauxllennium",
+    youtubePlaylistId: "OLAK5uy_mkOa2X39-KbodfzlChOhicsFPqTIZQehM",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_mkOa2X39-KbodfzlChOhicsFPqTIZQehM",
     description: "Vaporwave and indie pop collaboration with George Clanton.",
     tracks: [
       { trackNumber: 1, title: "Fauxllennium",         youtubeId: "z8mvJCgXfWA", durationSec: 198 },
@@ -154,6 +166,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2021,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/summers-over",
     spotifyQuery: "Jordana TV Girl Summer's Over",
+    youtubePlaylistId: "OLAK5uy_nGOKSfpIg7Os83RgNhjKLdqOL9o26bBMo",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_nGOKSfpIg7Os83RgNhjKLdqOL9o26bBMo",
     description: "Collaborative release with bedroom pop artist Jordana.",
     tracks: [
       { trackNumber: 1, title: "Sweet to Dream",           youtubeId: "Wf4wVs4h4LY", durationSec: 192 },
@@ -194,6 +208,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2020,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/the-night-in-question-french-exit-outtakes",
     spotifyQuery: "TV Girl The Night in Question French Exit Outtakes",
+    youtubePlaylistId: "OLAK5uy_lY95Bryl5q_kaK5Tjsk3JrY9aX4XWOSzw",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_lY95Bryl5q_kaK5Tjsk3JrY9aX4XWOSzw",
     description: "Official collection of demo-esque tracks and outtakes from the French Exit era.",
     tracks: [
       { trackNumber: 1,  title: "The Night in Question",   durationSec: 203 },
@@ -276,6 +292,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2013,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/lonely-women",
     spotifyQuery: "TV Girl Lonely Women",
+    youtubePlaylistId: "OLAK5uy_lBJAIAXo6aLcCpGdbEMydAFIWRyeN9qEQ",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_lBJAIAXo6aLcCpGdbEMydAFIWRyeN9qEQ",
     description: "Five-song EP featuring 'She Smokes in Bed' and 'Laura'.",
     tracks: [
       { trackNumber: 1,  title: "Lonely Women",            durationSec: 201 },
@@ -341,6 +359,8 @@ export const TV_GIRL_RELEASES: TVGirlRelease[] = [
     year: 2015,
     bandcampUrl: "https://tvgirl.bandcamp.com/album/natalie-wood",
     spotifyQuery: "TV Girl Natalie Wood",
+    youtubePlaylistId: "OLAK5uy_nWfHTprFxaD26yMxwHVaT_Z6s0BmTDCN4",
+    youtubePlaylistUrl: "https://www.youtube.com/playlist?list=OLAK5uy_nWfHTprFxaD26yMxwHVaT_Z6s0BmTDCN4",
     description: "Standalone 2015 single paired with B-side 'Like We Planned'.",
     tracks: [
       { trackNumber: 1, title: "Natalie Wood",             youtubeId: "mLY_XEXCh9Y", durationSec: 220 },
