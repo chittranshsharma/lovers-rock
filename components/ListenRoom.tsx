@@ -118,11 +118,10 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
   const theme = getTheme("tv-girl");
   const revealReady = userState ? isRevealUnlocked(userState) : false;
 
+  const searchQuery = encodeURIComponent(`${selectedRelease.artist} ${selectedTrack.title}`);
   const youtubeEmbedUrl = selectedTrack.youtubeId
     ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`
-    : selectedRelease.youtubePlaylistId
-    ? `https://www.youtube.com/embed/videoseries?list=${selectedRelease.youtubePlaylistId}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&enablejsapi=1`
-    : null;
+    : `https://www.youtube.com/embed?listType=search&list=${searchQuery}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`;
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none bg-[#120912] text-[#FCE7F3]">
