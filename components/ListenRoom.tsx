@@ -118,20 +118,31 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
   const theme = getTheme("tv-girl");
   const revealReady = userState ? isRevealUnlocked(userState) : false;
 
-  const searchQuery = encodeURIComponent(`${selectedRelease.artist} ${selectedTrack.title}`);
-  const youtubeEmbedUrl = selectedTrack.youtubeId
-    ? `https://www.youtube.com/embed/${selectedTrack.youtubeId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`
-    : `https://www.youtube.com/embed?listType=search&list=${searchQuery}&autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=1&modestbranding=1&rel=0&enablejsapi=1`;
+  // Accent color mapping for album vinyls
+  const albumColors: Record<string, string> = {
+    "french-exit": "#EC4899",
+    "who-really-cares": "#3B82F6",
+    "death-of-a-party-girl": "#EF4444",
+    "grapes-upon-the-vine": "#8B5CF6",
+    "fauxllennium": "#06B6D4",
+    "summers-over": "#F97316",
+    "lonely-women": "#D946EF",
+    "natalie-wood": "#EAB308",
+    "the-night-in-question-french-exit-outtakes": "#C084FC",
+    "maddie-acids-purple-hearts-club-band": "#A855F7",
+    "aestheticadelica": "#10B981",
+  };
+  const activeColor = albumColors[selectedRelease.id] || "#EC4899";
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden select-none bg-[#120912] text-[#FCE7F3]">
-      <CuteParticles color="#EC4899" />
+      <CuteParticles color={activeColor} />
 
       {/* Top Nav */}
       <SiteNav
         slug={slug}
         displayName={displayName}
-        color="#EC4899"
+        color={activeColor}
         isRevealReady={revealReady}
         onSpotifyToggle={() => setIsSpotifyOpen(!isSpotifyOpen)}
       />
@@ -141,28 +152,28 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
         {/* Header */}
         <section className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-mono tracking-widest uppercase"
-            style={{ background: "rgba(236,72,153,0.15)", border: "1px solid rgba(236,72,153,0.3)", color: "#F472B6" }}>
-            <Disc className="w-3.5 h-3.5 text-[#EC4899]" />
+            style={{ background: `${activeColor}22`, border: `1px solid ${activeColor}55`, color: activeColor }}>
+            <Disc className="w-3.5 h-3.5" style={{ color: activeColor }} />
             <span>MUSIC ROOM · 33⅓ RPM</span>
           </div>
           <h1 className="font-display font-black text-3xl sm:text-5xl uppercase tracking-tight text-[#FCE7F3]">
             THE LATE NIGHT RECORD
           </h1>
           <p className="font-serif italic text-sm max-w-md mx-auto text-[#F472B6]">
-            pick an album, pick a song — let it play softly while you exist.
+            select an album vinyl to spin, tap to listen on YouTube or Spotify.
           </p>
         </section>
 
         {/* Now Playing Player */}
-        <section className="rounded-2xl overflow-hidden shadow-2xl"
-          style={{ background: "rgba(30,15,27,0.85)", backdropFilter: "blur(20px)", border: "1.5px solid rgba(236,72,153,0.3)" }}>
+        <section className="rounded-2xl overflow-hidden shadow-2xl transition-colors duration-500"
+          style={{ background: "rgba(30,15,27,0.85)", backdropFilter: "blur(20px)", border: `1.5px solid ${activeColor}44` }}>
 
           {/* Album selector pill */}
-          <div className="p-4 border-b" style={{ borderColor: "rgba(236,72,153,0.2)" }}>
+          <div className="p-4 border-b" style={{ borderColor: `${activeColor}33` }}>
             <button
               onClick={() => setAlbumSelectorOpen(v => !v)}
               className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all cursor-pointer"
-              style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.3)" }}
+              style={{ background: `${activeColor}15`, border: `1px solid ${activeColor}44` }}
             >
               <div className="text-left">
                 <div className="text-[10px] font-mono tracking-widest uppercase text-[#F472B6]">Now Playing From</div>
@@ -175,7 +186,7 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
               </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform ${albumSelectorOpen ? "rotate-180" : ""}`}
-                style={{ color: "#EC4899" }}
+                style={{ color: activeColor }}
               />
             </button>
 
@@ -187,63 +198,50 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   className="mt-3 rounded-xl overflow-hidden"
-                  style={{ border: "1px solid rgba(236,72,153,0.3)", background: "rgba(20,10,18,0.95)" }}
+                  style={{ border: `1px solid ${activeColor}44`, background: "rgba(20,10,18,0.95)" }}
                 >
                   <div className="max-h-64 overflow-y-auto p-2 space-y-1">
-                    {TV_GIRL_RELEASES.map((rel) => (
-                      <button
-                        key={rel.id}
-                        onClick={() => handleSelectRelease(rel)}
-                        className="w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all cursor-pointer"
-                        style={{
-                          background: selectedRelease.id === rel.id
-                            ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(192,132,252,0.15))"
-                            : "transparent",
-                          border: selectedRelease.id === rel.id ? "1px solid rgba(236,72,153,0.4)" : "1px solid transparent",
-                        }}
-                      >
-                        <div>
-                          <div className="font-display font-bold text-xs text-[#FCE7F3]">{rel.title}</div>
-                          <div className="text-[9px] font-mono mt-0.5 text-[#F472B6]">
-                            {rel.artist} · {rel.year} · {rel.tracks.length} tracks
+                    {TV_GIRL_RELEASES.map((rel) => {
+                      const relColor = albumColors[rel.id] || "#EC4899";
+                      return (
+                        <button
+                          key={rel.id}
+                          onClick={() => handleSelectRelease(rel)}
+                          className="w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all cursor-pointer"
+                          style={{
+                            background: selectedRelease.id === rel.id
+                              ? `linear-gradient(135deg, ${relColor}40, rgba(192,132,252,0.15))`
+                              : "transparent",
+                            border: selectedRelease.id === rel.id ? `1px solid ${relColor}66` : "1px solid transparent",
+                          }}
+                        >
+                          <div>
+                            <div className="font-display font-bold text-xs text-[#FCE7F3]">{rel.title}</div>
+                            <div className="text-[9px] font-mono mt-0.5 text-[#F472B6]">
+                              {rel.artist} · {rel.year} · {rel.tracks.length} tracks
+                            </div>
                           </div>
-                        </div>
-                        {selectedRelease.id === rel.id && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#EC4899" }} />}
-                      </button>
-                    ))}
+                          {selectedRelease.id === rel.id && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: relColor }} />}
+                        </button>
+                      );
+                    })}
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Turntable + Controls + Video Screen */}
+          {/* Hardcoded Vinyl Record Player */}
           <div className="p-6 sm:p-8 flex flex-col items-center gap-6">
 
-            {/* Visible CRT Video Player Monitor for direct browser playback (YouTube Playlist / Video) */}
-            {youtubeEmbedUrl ? (
-              <div className="w-full max-w-md aspect-video rounded-xl overflow-hidden shadow-2xl border-2 border-[#EC4899]/40 relative bg-black">
-                <iframe
-                  ref={iframeRef}
-                  key={`${selectedRelease.id}-${selectedTrack.trackNumber}-${selectedTrack.youtubeId || "track"}-${isPlaying}`}
-                  src={youtubeEmbedUrl}
-                  title={`${selectedRelease.title} - ${selectedTrack.title}`}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-            ) : (
-              /* Vinyl Spinning view when no direct video/playlist */
-              <TVVinyl
-                isPlaying={isPlaying}
-                onToggle={handleTogglePlay}
-                primaryColor="#EC4899"
-                audioAmplitude={audioAmplitude}
-                release={selectedRelease}
-                recipientName={displayName}
-              />
-            )}
+            <TVVinyl
+              isPlaying={isPlaying}
+              onToggle={handleTogglePlay}
+              primaryColor={activeColor}
+              audioAmplitude={audioAmplitude}
+              release={selectedRelease}
+              recipientName={displayName}
+            />
 
             {/* Now Playing Info */}
             <div className="text-center space-y-1">
@@ -260,29 +258,31 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
                 {selectedTrack.durationSec ? ` · ${formatDuration(selectedTrack.durationSec)}` : ""}
               </div>
 
-              {/* Action links */}
-              <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
+              {/* Direct External Action Links */}
+              <div className="pt-3 flex flex-wrap items-center justify-center gap-2">
                 {selectedRelease.youtubePlaylistUrl ? (
                   <a
                     href={selectedRelease.youtubePlaylistUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[10px] font-mono px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer"
-                    style={{ background: "rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.4)", color: "#FCE7F3" }}
+                    className="text-[11px] font-mono font-bold px-4 py-2 rounded-full inline-flex items-center gap-2 transition-all hover:scale-105 shadow-md cursor-pointer"
+                    style={{ background: "linear-gradient(135deg, #FF0000, #CC0000)", color: "#FFFFFF" }}
                   >
-                    <Play className="w-3 h-3 fill-current text-[#EC4899]" />
-                    <span>OPEN ON YOUTUBE</span>
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>LISTEN ON YOUTUBE PLAYLIST</span>
+                    <ExternalLink className="w-3 h-3 opacity-80" />
                   </a>
                 ) : selectedTrack.youtubeId ? (
                   <a
                     href={`https://www.youtube.com/watch?v=${selectedTrack.youtubeId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[10px] font-mono px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-all hover:scale-105 cursor-pointer"
-                    style={{ background: "rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.4)", color: "#FCE7F3" }}
+                    className="text-[11px] font-mono font-bold px-4 py-2 rounded-full inline-flex items-center gap-2 transition-all hover:scale-105 shadow-md cursor-pointer"
+                    style={{ background: "linear-gradient(135deg, #FF0000, #CC0000)", color: "#FFFFFF" }}
                   >
-                    <Play className="w-3 h-3 fill-current text-[#EC4899]" />
-                    <span>PLAY ON YOUTUBE</span>
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>PLAY SONG ON YOUTUBE</span>
+                    <ExternalLink className="w-3 h-3 opacity-80" />
                   </a>
                 ) : null}
                 <a
@@ -389,11 +389,29 @@ export default function ListenRoom({ slug }: ListenRoomProps) {
                         {track.title}
                       </span>
                       <div className="flex items-center gap-2 shrink-0">
-                        {!track.youtubeId && (
-                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#EC4899]/20 text-[#F472B6]">
-                            BC
-                          </span>
-                        )}
+                        {track.youtubeId ? (
+                          <a
+                            href={`https://www.youtube.com/watch?v=${track.youtubeId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-1 rounded hover:bg-red-600/30 text-red-400 transition-colors"
+                            title="Play track on YouTube"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        ) : selectedRelease.youtubePlaylistUrl ? (
+                          <a
+                            href={selectedRelease.youtubePlaylistUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-1 rounded hover:bg-red-600/30 text-red-400 transition-colors"
+                            title="Open album playlist on YouTube"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        ) : null}
                         {track.durationSec && (
                           <span className="text-[10px] font-mono text-[#F472B6]">
                             {formatDuration(track.durationSec)}
