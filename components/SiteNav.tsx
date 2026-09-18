@@ -45,13 +45,13 @@ export default function SiteNav({
 
   return (
     <>
-      <header className="relative z-30 w-full max-w-6xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between flex-wrap gap-3 border-b border-[rgba(247,245,239,0.12)] bg-[#09090B]/92 backdrop-blur-md sticky top-0">
+      <header className="relative z-30 w-full max-w-6xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between flex-wrap gap-3 border-b border-[rgba(255,29,158,0.15)] bg-black/95 backdrop-blur-md sticky top-0">
         {/* Brand Identity */}
         <Link
           href={`/${cleanSlug}`}
           className="flex items-center gap-2.5 group cursor-pointer"
         >
-          <span className="font-display font-black text-base sm:text-lg tracking-tight text-[#F7F5EF] group-hover:text-white transition-colors">
+          <span className="font-display font-black text-base sm:text-lg tracking-tight text-white group-hover:text-[#FF1D9E] transition-colors">
             TV GIRL
           </span>
           <span
@@ -64,7 +64,7 @@ export default function SiteNav({
               style={{ color }}
             />
           </span>
-          <span className="font-mono text-[10px] tracking-widest px-2 py-0.5 bg-[#151518] border border-white/10 rounded-[2px] text-[#D9D0BE]">
+          <span className="font-mono text-[10px] tracking-widest px-2 py-0.5 bg-[#111111] border border-[rgba(255,29,158,0.2)] rounded-[2px] text-[#8B8B8B]">
             {displayName && displayName.toLowerCase() !== "you" ? `${displayName.toUpperCase()}'S WORLD` : "YOUR WORLD"}
           </span>
         </Link>
@@ -83,8 +83,8 @@ export default function SiteNav({
                 href={item.href}
                 className={`px-2.5 sm:px-3 py-1 text-[11px] font-mono tracking-wider uppercase transition-all rounded-[2px] cursor-pointer ${
                   isActive
-                    ? "bg-[#151518] text-[#F7F5EF] border border-white/20 shadow-sm"
-                    : "text-[#AFA797] hover:text-[#F7F5EF] hover:bg-white/5 border border-transparent"
+                    ? "bg-[#111111] text-white border border-[rgba(255,29,158,0.3)] shadow-sm"
+                    : "text-[#8B8B8B] hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
                 style={isActive ? { borderBottomColor: color, borderBottomWidth: "2px" } : {}}
               >
@@ -96,8 +96,7 @@ export default function SiteNav({
           {/* Reveal link in nav */}
           <Link
             href={`/${cleanSlug}/reveal`}
-            className="px-2.5 sm:px-3 py-1 text-[11px] font-mono tracking-wider uppercase transition-all rounded-[2px] cursor-pointer flex items-center gap-1.5 animate-pulse bg-white/10 text-white border border-white/30"
-            style={{ color }}
+            className="px-2.5 sm:px-3 py-1 text-[11px] font-mono tracking-wider uppercase transition-all rounded-[2px] cursor-pointer flex items-center gap-1.5 bg-[#FF1D9E] text-black border border-transparent hover:brightness-110"
           >
             <Sparkles className="w-3 h-3" />
             <span>THE LAST THING ♡</span>
@@ -111,12 +110,12 @@ export default function SiteNav({
           {onSpotifyToggle && (
             <button
               onClick={onSpotifyToggle}
-              className="p-1.5 bg-[#151518] border border-white/10 hover:border-white/25 rounded-[2px] text-[#AFA797] hover:text-white cursor-pointer transition-all flex items-center gap-1.5"
+              className="p-1.5 bg-[#111111] border border-[rgba(255,29,158,0.2)] hover:border-[rgba(255,29,158,0.5)] rounded-[2px] text-[#8B8B8B] hover:text-white cursor-pointer transition-all flex items-center gap-1.5"
               title="Open Spotify tape player"
               aria-label="Toggle Spotify"
             >
               <Music className="w-3.5 h-3.5" style={{ color }} />
-              <span className="text-[10px] font-mono hidden sm:inline text-[#D9D0BE]">TAPE</span>
+              <span className="text-[10px] font-mono hidden sm:inline text-[#8B8B8B]">TAPE</span>
             </button>
           )}
         </div>
@@ -124,7 +123,7 @@ export default function SiteNav({
 
       {/* Secret Toast */}
       {showSecretToast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-[#151518] border border-pink-500/40 text-[11px] font-mono text-[#F7F5EF] shadow-2xl rounded-[2px] animate-bounce">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-black border border-[rgba(255,29,158,0.5)] text-[11px] font-mono text-white shadow-2xl rounded-[2px] animate-bounce">
           {SECRETS["heart-flutter"].toast}
         </div>
       )}
